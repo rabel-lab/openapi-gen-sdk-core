@@ -33,17 +33,6 @@
   "type": "module",
   "license": "MIT",
   "engines": {
-    "node": ">=18"
-  },
-  "keywords": [
-    "openapi",
-    "sdk",
-    "generator",
-    "typescript",
-    "automation",
-    "ci",
-    "patch",
-    "api",
-    "rabel-labs"
-  ]
+    "node": ">=20"
+  }
 }
