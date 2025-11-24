@@ -1,0 +1,50 @@
+{
+  "name": "@rabel-labs/openapi-sdk-core",
+  "version": "1.0.0",
+  "openapi": {
+    "source": "https://raw.githubusercontent.com/swagger-api/swagger-petstore/master/src/main/resources/openapi.yaml"
+  },
+  "description": "Core library for generating TypeScript SDKs from OpenAPI specs, managing patches, versions, and automation scripts.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "openapi-gen": "dist/cli.js"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsup",
+    "prepare": "pnpm build",
+    "lint": "eslint . --ext ts --max-warnings 0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "commander": "^11.0.0",
+    "node-fetch": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.2",
+    "yaml": "^2.3.1"
+  },
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "openapi",
+    "sdk",
+    "generator",
+    "typescript",
+    "automation",
+    "ci",
+    "patch",
+    "api",
+    "rabel-labs"
+  ]
+}
