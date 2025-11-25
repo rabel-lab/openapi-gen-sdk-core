@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
-import { OpenApiSource } from './type';
+import { OpenApiSource } from '../type';
 
 /**
  * Extract an OpenAPI spec from a URL or local file path.

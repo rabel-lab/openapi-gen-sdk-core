@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { PKG_PATH } from '@/utils/const';
-import { OpenApiPackageInfo, PackageJson } from './type';
+import { OpenApiPackageInfo, PackageJson } from '../type';
 
 /**
  * Get the package.json file.

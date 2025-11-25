@@ -5,7 +5,7 @@ import { parseOpenApiSpec } from '@/utils/parse';
 import { PATCHES_DIR } from '@/utils/const';
 import { getPackageOpenApi } from '@/utils/package';
 import { fetchOpenApiSource } from '@/utils/fetch';
-import { OpenApiSource } from './type';
+import { OpenApiSource } from '../type';
 
 /**
  * Write a patch file for a given OpenAPI spec content.

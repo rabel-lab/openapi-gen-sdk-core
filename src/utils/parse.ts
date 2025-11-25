@@ -1,5 +1,5 @@
 import YAML from 'yaml';
-import { OpenApiSource } from './type';
+import { OpenApiSource } from '../type';
 
 /**
  * Parse an OpenAPI spec from text.
