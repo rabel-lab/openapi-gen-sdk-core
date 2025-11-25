@@ -22,10 +22,14 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "devDependencies": {
+    "@swagger-api/apidom-core": "1.0.0-rc.4",
+    "@swagger-api/apidom-ns-openapi-3-1": "1.0.0-rc.4",
+    "@swagger-api/apidom-parser-adapter-json": "1.0.0-rc.4",
     "@types/node": "^20.0.0",
     "commander": "^11.0.0",
     "node-fetch": "^3.0.0",
     "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^5.2",
     "yaml": "^2.3.1"
