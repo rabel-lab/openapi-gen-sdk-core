@@ -5,7 +5,7 @@ import { parseOpenApiSpec } from '@/utils/parse';
 import { SNAPSHOTS_DIR } from '@/utils/const';
 import { getPackageOpenApi } from '@/utils/package';
 import { fetchOpenApiSource } from '@/utils/fetch';
-import { OpenApiSource } from '../type';
+import { OpenApiSource } from '../types/type';
 
 /**
  * Write a snapshot file for a given OpenAPI spec content.
