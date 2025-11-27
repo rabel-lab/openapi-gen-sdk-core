@@ -10,7 +10,6 @@ import { parseSource } from '@/core';
  * @returns An object with `text`, `pathname` and `extension` properties.
  */
 export async function fetchOpenApiSource(input: string): Promise<OpenApiSource> {
-  parseSource(input);
   console.log('🔨 Extracting OpenAPI spec from:', input);
   let text;
   if (input.startsWith('http://') || input.startsWith('https://')) {

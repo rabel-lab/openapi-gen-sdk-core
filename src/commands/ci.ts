@@ -1,3 +1,5 @@
+import { parseSource } from '@/core';
+import { infoVisitor } from '@/core/visitors/infoVisitor';
 import { fetchOpenApiSource } from '@/utils/fetch';
 import { editPackage, getPackageOpenApi } from '@/utils/package';
 import { getOpenApiVersion } from '@/utils/parse';
@@ -6,10 +8,16 @@ import { execSync } from 'child_process';
 
 export async function ciCheck() {
   const { version: pkgOpenApiVersion, source: pkgOpenApiSource } = await getPackageOpenApi();
-
   const source = await fetchOpenApiSource(pkgOpenApiSource);
   const externalVersion = getOpenApiVersion(source);
-
+  const { result } = await parseSource(pkgOpenApiSource);
+  if (result) {
+    const infoResult = infoVisitor.visit(result);
+    console.log(infoResult);
+  } else {
+    console.log('no result');
+    return false;
+  }
   if (pkgOpenApiVersion === externalVersion) {
     console.log('✅ Local patch is up to date.');
     return false;

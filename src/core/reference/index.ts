@@ -17,6 +17,7 @@ import OpenAPI3_1DereferenceStrategy from '@swagger-api/apidom-reference/derefer
 import ApiDOMDereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/apidom';
 
 import { SNAPSHOTS_DIR } from '@/utils';
+import { isOpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
 
 //-> Resolve Component
 //? https://github.com/swagger-api/apidom/tree/main/packages/apidom-reference#resolve-component
@@ -98,6 +99,6 @@ const populatedParse = emptyParse;
  * @returns - ApiDom ParseResultElement
  */
 export async function parseSource(source: string): Promise<ParseResultElement> {
-  const result = await populatedParse(source);
-  return result;
+  const parseResultElement = await populatedParse(source);
+  return parseResultElement;
 }

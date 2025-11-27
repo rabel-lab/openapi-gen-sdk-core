@@ -1,33 +1,37 @@
+import {
+  isSwaggerElement as isOpenApi2Element,
+  SwaggerElement,
+} from '@swagger-api/apidom-ns-openapi-2';
 import { Element } from '@swagger-api/apidom-core';
-import { isSwaggerElement as isOpenApi2Element } from '@swagger-api/apidom-ns-openapi-2';
-import { isOpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
-import { isOpenApi3_1Element } from '@swagger-api/apidom-ns-openapi-3-1';
+import { isOpenApi3_0Element, OpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
+import { isOpenApi3_1Element, OpenApi3_1Element } from '@swagger-api/apidom-ns-openapi-3-1';
 
-interface PredicateFunc {
-  (element: Element): boolean;
+/**
+ * @public
+ */
+export interface PredicateFunc<E extends Element> {
+  (element: E): element is E;
 }
 
 //-> apidom-ns-openapi-2
-export const isOpenApi2: PredicateFunc = (element): boolean => {
-  return isOpenApi2Element(element);
+export const isOpenApi2: PredicateFunc<SwaggerElement> = (el): el is SwaggerElement => {
+  return isOpenApi2Element(el);
 };
 
 //-> apidom-ns-openapi-3-0
-export const isOpenApi3_0: PredicateFunc = (element): boolean => {
-  return isOpenApi3_0Element(element);
+export const isOpenApi3_0: PredicateFunc<OpenApi3_0Element> = (el): el is OpenApi3_0Element => {
+  console.log('isOpenApi3_0 via IsElement', isOpenApi3_0Element(el));
+  return isOpenApi3_0Element(el);
 };
 
 //-> apidom-ns-openapi-3-1
-export const isOpenApi3_1: PredicateFunc = (element): boolean => {
-  return isOpenApi3_1Element(element);
+export const isOpenApi3_1: PredicateFunc<OpenApi3_1Element> = (el): el is OpenApi3_1Element => {
+  return isOpenApi3_1Element(el);
 };
 
 //-> appidom-ns-openapi-3-0 | 3-1
-export const isOpenApi3x: PredicateFunc = (element): boolean => {
-  return isOpenApi3_0(element) || isOpenApi3_1(element);
-};
-
-//-> appidom-ns-openapi | All
-export const isOpenApi: PredicateFunc = (element): boolean => {
-  return isOpenApi2(element) || isOpenApi3x(element);
+export const isOpenApi3x: PredicateFunc<OpenApi3_0Element | OpenApi3_1Element> = (
+  el,
+): el is OpenApi3_0Element | OpenApi3_1Element => {
+  return isOpenApi3_0(el) || isOpenApi3_1(el);
 };
