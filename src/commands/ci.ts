@@ -1,49 +1,32 @@
 import { parseSource } from '@/core';
-import { infoVisitor } from '@/core/visitors/infoVisitor';
-import { fetchOpenApiSource } from '@/utils/fetch';
+import { infoVisitor } from '@/core/visitors';
 import { editPackage, getPackageOpenApi } from '@/utils/package';
-import { getOpenApiVersion } from '@/utils/parse';
 import { createSnapshot } from '@/utils/snapshot';
 import { execSync } from 'child_process';
 
 export async function ciCheck() {
   const { version: pkgOpenApiVersion, source: pkgOpenApiSource } = await getPackageOpenApi();
-  const source = await fetchOpenApiSource(pkgOpenApiSource);
-  const externalVersion = getOpenApiVersion(source);
-  const { result } = await parseSource(pkgOpenApiSource);
-  if (result) {
-    const infoResult = infoVisitor.visit(result);
-    console.log(infoResult);
-  } else {
-    console.log('no result');
-    return false;
-  }
+  const { parseResult } = await parseSource(pkgOpenApiSource);
+  const externalVersion = infoVisitor.visit(parseResult).version;
   if (pkgOpenApiVersion === externalVersion) {
     console.log('✅ Local patch is up to date.');
     return false;
   }
-
-  //GitHub Actions Variable
   console.log(`🚨 Update available: ${pkgOpenApiVersion} → ${externalVersion}`);
   return true;
 }
 
 export async function ciUpdate() {
   const { source: pkgOpenApiSource } = await getPackageOpenApi();
-
-  const source = await fetchOpenApiSource(pkgOpenApiSource);
-  const version = getOpenApiVersion(source);
-
+  const openApiSource = await parseSource(pkgOpenApiSource);
+  const version = infoVisitor.visit(openApiSource.parseResult).version;
   editPackage({ version });
-  createSnapshot(source);
-
+  createSnapshot(openApiSource);
   return version;
 }
 
 export async function ciGenerate() {
   console.log('📦 Generating SDK with `pnpm run gen`...');
-
   execSync('pnpm run gen', { stdio: 'inherit' });
-
   console.log('✅ SDK generation complete.');
 }

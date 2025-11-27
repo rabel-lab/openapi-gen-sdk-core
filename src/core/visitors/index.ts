@@ -1,5 +1,6 @@
 import { Element } from '@swagger-api/apidom-core';
 import { PredicateFunc } from '../predicate';
+import InfoVisitor from '@/core/visitors/infoVisitor';
 
 /* ========================================================================== 
  * Base
@@ -28,9 +29,6 @@ export abstract class Visitor<T> {
   constructor(handlers: VisitorHandler<any, T>[] = []) {
     this.handlers = handlers;
   }
-  push<E extends Element>(h: VisitorHandler<E, T>) {
-    this.handlers.push(h);
-  }
   visit(element: Element): T {
     for (const h of this.handlers) {
       if (h.predicate(element)) {
@@ -40,3 +38,8 @@ export abstract class Visitor<T> {
     throw new Error('Visitor: no handler found');
   }
 }
+
+/* ============================================================================
+ * Visitors
+ ============================================================================ */
+export const infoVisitor = new InfoVisitor();

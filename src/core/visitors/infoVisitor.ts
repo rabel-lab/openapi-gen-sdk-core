@@ -40,10 +40,8 @@ const infoHandlers: VisitorHandlers = [
   }),
 ];
 
-class InfoVisitor extends Visitor<Info> {
-  constructor(handlers: VisitorHandlers = infoHandlers) {
+export default class InfoVisitor extends Visitor<Info> {
+  constructor() {
     super(infoHandlers);
   }
 }
-
-export const infoVisitor = new InfoVisitor();

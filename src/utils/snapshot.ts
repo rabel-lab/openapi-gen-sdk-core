@@ -1,11 +1,11 @@
 import { mkdirSync, writeFileSync } from 'fs';
 import { basename as pathBasename, join as pathJoin } from 'path';
 import YAML from 'yaml';
-import { parseOpenApiSpec } from '@/utils/parse';
 import { SNAPSHOTS_DIR } from '@/utils/const';
 import { getPackageOpenApi } from '@/utils/package';
-import { fetchOpenApiSource } from '@/utils/fetch';
-import { OpenApiSource } from '../types/type';
+import { OpenApiSource } from '@/types/type';
+import { infoVisitor } from '@/core/visitors';
+import { parseSource } from '@/core';
 
 /**
  * Write a snapshot file for a given OpenAPI spec content.
@@ -14,25 +14,24 @@ import { OpenApiSource } from '../types/type';
  * @param {string} params.pathname - The base path or file name
  * @param {string} params.extension - File extension, ".json" or ".yaml".
  */
-export function createSnapshot(source: OpenApiSource) {
-  //# Parse
-  const { pathname, extension } = source;
-  const spec = parseOpenApiSpec(source);
-  const apiVersion = spec.info?.version;
+export function createSnapshot(openApiSource: OpenApiSource) {
+  const { parseResult, source, extension } = openApiSource;
+  const info = infoVisitor.visit(parseResult);
+  const apiVersion = info.version;
   if (typeof apiVersion !== 'string') {
     throw new Error('Cannot write snapshot: spec.info.version is not a string');
   }
 
   // # Write
   //- Determine base filename
-  const baseName = pathBasename(pathname, extension);
+  const baseName = pathBasename(source, extension);
   mkdirSync(SNAPSHOTS_DIR, { recursive: true });
 
   const outFilename = `${baseName}.${apiVersion}${extension}`;
   const outPath = pathJoin(SNAPSHOTS_DIR, outFilename);
 
   //- Stringify
-  const outText = extension === '.json' ? JSON.stringify(spec, null, 2) : YAML.stringify(spec);
+  const outText = extension === '.json' ? JSON.stringify(info, null, 2) : YAML.stringify(info);
 
   // # Write
   writeFileSync(outPath, outText, 'utf-8');
@@ -59,8 +58,8 @@ export async function getSnapshotPath(version = null) {
     throw new Error('❌ Cannot get patch file path: no API version found');
   }
 
-  const { pathname, extension } = await fetchOpenApiSource(pkgOpenApiSource);
-  const baseName = pathBasename(pathname, extension);
+  const { source, extension } = await parseSource(pkgOpenApiSource);
+  const baseName = pathBasename(source, extension);
 
   const outFilename = `${baseName}.${apiVersion}${extension}`;
   return pathJoin(SNAPSHOTS_DIR, outFilename);

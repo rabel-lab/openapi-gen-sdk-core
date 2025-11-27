@@ -1,4 +1,4 @@
-import { ParseResultElement } from '@swagger-api/apidom-core';
+import { extname as pathExtname } from 'path';
 import { options, parse as emptyParse } from '@swagger-api/apidom-reference/configuration/empty';
 import FileResolver from '@swagger-api/apidom-reference/resolve/resolvers/file';
 import HTTPResolverAxios from '@swagger-api/apidom-reference/resolve/resolvers/http-axios';
@@ -16,7 +16,7 @@ import OpenAPI3_0DereferenceStrategy from '@swagger-api/apidom-reference/derefer
 import OpenAPI3_1DereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/openapi-3-1';
 import ApiDOMDereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/apidom';
 
-import { SNAPSHOTS_DIR } from '@/utils';
+import { OpenApiSource, SNAPSHOTS_DIR } from '@/utils';
 import { isOpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
 
 //-> Resolve Component
@@ -98,7 +98,20 @@ const populatedParse = emptyParse;
  * @param source - The OpenAPI spec source.
  * @returns - ApiDom ParseResultElement
  */
-export async function parseSource(source: string): Promise<ParseResultElement> {
-  const parseResultElement = await populatedParse(source);
-  return parseResultElement;
+export async function parseSource(source: string): Promise<OpenApiSource> {
+  console.log('🔨 Extracting OpenAPI spec from:', source);
+  const parseResult = await populatedParse(source);
+
+  const pathname =
+    source.startsWith('http://') || source.startsWith('https://')
+      ? new URL(source).pathname
+      : source;
+
+  const extension = pathExtname(pathname).toLowerCase();
+
+  return {
+    parseResult,
+    source,
+    extension,
+  };
 }
