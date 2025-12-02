@@ -1,19 +1,20 @@
 import { Element } from '@swagger-api/apidom-core';
 import { PredicateFunc } from '@/core/predicate';
+import { ResolvedConfig } from '@/core/parser/operationId/action';
 
 type ParserCommandName = 'operationId' | 'sort';
 
-type ParserCommand<E extends Element> = (element: E) => E;
+type ParserCommand<E extends Element> = (element: E, options?: ResolvedConfig) => E;
 
-export interface CommandParserHandler<PE extends Element = Element> {
+export interface CommandParserHandler<PE extends Element = any> {
   name: ParserCommandName;
   predicate: PredicateFunc<PE>;
   handler: ParserCommand<PE>;
 }
 
 export interface ParserHandlersShape {
-  operationId: CommandParserHandler[];
-  sort: CommandParserHandler[];
+  operationId: CommandParserHandler<Element>[];
+  sort: CommandParserHandler<Element>[];
 }
 
 type CommandExecutor = {
@@ -44,18 +45,18 @@ export class ParserCommander implements CommandExecutor {
       }
     }
   }
-  operationId<T extends Element>(element: T): T {
+  operationId<T extends Element>(element: T, options?: ResolvedConfig): T {
     for (const h of this.handlers.operationId) {
       if (h.predicate(element)) {
-        return h.handler(element) as T;
+        return h.handler(element, options) as T;
       }
     }
     throw new Error('ParserCommander: no handler found');
   }
-  sort<T extends Element>(element: T): T {
+  sort<T extends Element>(element: T, options?: ResolvedConfig): T {
     for (const h of this.handlers.sort) {
       if (h.predicate(element)) {
-        return h.handler(element) as T;
+        return h.handler(element, options) as T;
       }
     }
     throw new Error('ParserCommander: no handler found');

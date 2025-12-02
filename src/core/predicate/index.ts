@@ -38,7 +38,7 @@ export const isOpenApi3_1: PredicateFunc<OpenApi3_1Element> = (
   return isOpenApi3_1Element(el);
 };
 
-export const isOpenApi3x = orMany<OpenApi3_0Element | OpenApi3_1Element>(
-  (el): el is OpenApi3_0Element | OpenApi3_1Element => isOpenApi3_0(el as OpenApi3_0Element),
-  (el): el is OpenApi3_0Element | OpenApi3_1Element => isOpenApi3_1(el as OpenApi3_1Element),
-);
+export const isOpenApi3x: PredicateFunc<OpenApi3_0Element | OpenApi3_1Element> = (
+  el: Element,
+): el is OpenApi3_0Element | OpenApi3_1Element =>
+  isOpenApi3_0(el as OpenApi3_0Element) || isOpenApi3_1(el as OpenApi3_1Element);

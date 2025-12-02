@@ -1,7 +1,7 @@
 type NormalizeFunc = (operationId: string, path: string, method: string) => string;
 type SkipNormalizeFunc = (path: string, method: string) => boolean;
 
-type NormalizeOptions = {
+export type ResolvedConfig = {
   /**
    * Word to use as root path ( '/'  => 'root' )
    * @default 'root'
@@ -31,7 +31,7 @@ type NormalizeOptions = {
   skipRefactoring?: boolean | SkipNormalizeFunc;
 };
 
-const defaultConfig: NormalizeOptions = {
+const defaultConfig: ResolvedConfig = {
   rootWord: 'root',
   methodPosition: 'prefix',
   caseStyle: 'camel',
@@ -68,7 +68,7 @@ const toTokens = (str: string): string[] => {
  * @param tokens - eg. ['a', 'b', 'c']
  * @returns - eg. 'aBC'
  */
-const toCase = (caseStyle: NormalizeOptions['caseStyle'], tokens: string[]): string => {
+const toCase = (caseStyle: ResolvedConfig['caseStyle'], tokens: string[]): string => {
   if (!tokens.length) return '';
   switch (caseStyle) {
     case 'snake':
@@ -93,8 +93,8 @@ const toCase = (caseStyle: NormalizeOptions['caseStyle'], tokens: string[]): str
  */
 const isPathParam = (segment: string) => /^\{.*\}$/.test(segment);
 
-export function createOperationIdParser(options?: Partial<NormalizeOptions>): NormalizeFunc {
-  const config: NormalizeOptions = {
+export function createOperationIdParser(options?: Partial<ResolvedConfig>): NormalizeFunc {
+  const config: ResolvedConfig = {
     ...defaultConfig,
     ...options,
   };
