@@ -4,7 +4,7 @@ import { ResolvedConfig } from '@/core/parser/operationId/action';
 
 type ParserCommandName = 'operationId' | 'sort';
 
-type ParserCommand<E extends Element> = (element: E, options?: ResolvedConfig) => E;
+type ParserCommand<E extends Element> = (element: E, options?: Partial<ResolvedConfig>) => E;
 
 export interface CommandParserHandler<PE extends Element = any> {
   name: ParserCommandName;
@@ -45,7 +45,7 @@ export class ParserCommander implements CommandExecutor {
       }
     }
   }
-  operationId<T extends Element>(element: T, options?: ResolvedConfig): T {
+  operationId<T extends Element>(element: T, options?: Partial<ResolvedConfig>): T {
     for (const h of this.handlers.operationId) {
       if (h.predicate(element)) {
         return h.handler(element, options) as T;
@@ -53,7 +53,7 @@ export class ParserCommander implements CommandExecutor {
     }
     throw new Error('ParserCommander: no handler found');
   }
-  sort<T extends Element>(element: T, options?: ResolvedConfig): T {
+  sort<T extends Element>(element: T, options?: Partial<ResolvedConfig>): T {
     for (const h of this.handlers.sort) {
       if (h.predicate(element)) {
         return h.handler(element, options) as T;
