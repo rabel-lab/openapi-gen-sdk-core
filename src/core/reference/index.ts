@@ -1,22 +1,23 @@
+import { OpenApiSource, SNAPSHOTS_DIR } from '@/utils';
+
 import { extname as pathExtname } from 'path';
+
 import { options, parse as emptyParse } from '@swagger-api/apidom-reference/configuration/empty';
-import FileResolver from '@swagger-api/apidom-reference/resolve/resolvers/file';
-import HTTPResolverAxios from '@swagger-api/apidom-reference/resolve/resolvers/http-axios';
-import OpenAPIJSON2Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-2';
-import OpenAPIYAML2Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-2';
-import OpenAPIJSON3_0Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-3-0';
-import OpenAPIYAML3_0Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-3-0';
-import OpenAPIJSON3_1Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-3-1';
-import OpenAPIYAML3_1Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-3-1';
-import OpenAPI2ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-2';
-import OpenAPI3_0ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-0';
-import OpenAPI3_1ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-1';
+import ApiDOMDereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/apidom';
 import OpenAPI2DereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/openapi-2';
 import OpenAPI3_0DereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/openapi-3-0';
 import OpenAPI3_1DereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/openapi-3-1';
-import ApiDOMDereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/apidom';
-
-import { OpenApiSource, SNAPSHOTS_DIR } from '@/utils';
+import OpenAPIJSON2Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-2';
+import OpenAPIJSON3_0Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-3-0';
+import OpenAPIJSON3_1Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-json-3-1';
+import OpenAPIYAML2Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-2';
+import OpenAPIYAML3_0Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-3-0';
+import OpenAPIYAML3_1Parser from '@swagger-api/apidom-reference/parse/parsers/openapi-yaml-3-1';
+import FileResolver from '@swagger-api/apidom-reference/resolve/resolvers/file';
+import HTTPResolverAxios from '@swagger-api/apidom-reference/resolve/resolvers/http-axios';
+import OpenAPI2ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-2';
+import OpenAPI3_0ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-0';
+import OpenAPI3_1ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-1';
 
 //-> Resolve Component
 //? https://github.com/swagger-api/apidom/tree/main/packages/apidom-reference#resolve-component

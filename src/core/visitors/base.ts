@@ -1,4 +1,5 @@
 import { PredicateFunc } from '@/core/predicate';
+
 import { Element } from '@swagger-api/apidom-core';
 
 export interface VisitorHandler<E extends Element, T> {

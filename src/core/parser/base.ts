@@ -1,6 +1,7 @@
-import { Element } from '@swagger-api/apidom-core';
-import { PredicateFunc } from '@/core/predicate';
 import { ResolvedConfig } from '@/core/parser/operationId/action';
+import { PredicateFunc } from '@/core/predicate';
+
+import { Element } from '@swagger-api/apidom-core';
 
 export type ParserCommandName = 'operationId' | 'sort';
 

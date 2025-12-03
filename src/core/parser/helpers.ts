@@ -1,7 +1,8 @@
-import { Element } from '@swagger-api/apidom-core';
 import { CommandParserHandler } from '@/core/parser/base';
-import { PredicateFunc } from '@/core/predicate';
 import { ResolvedConfig } from '@/core/parser/operationId/action';
+import { PredicateFunc } from '@/core/predicate';
+
+import { Element } from '@swagger-api/apidom-core';
 
 /**
  * Create a VisitorHandler.

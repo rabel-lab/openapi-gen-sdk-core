@@ -27,8 +27,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.25",
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
     "eslint": "^9.39.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.7.3",
     "tsup": "^8.5.1",
     "tsx": "^4.20.6",
@@ -39,7 +41,6 @@
     "node": ">=22"
   },
   "dependencies": {
-    "commander": "^11.1.0",
     "@hey-api/openapi-ts": "^0.88.0",
     "@swagger-api/apidom-ast": "1.0.0-rc.4",
     "@swagger-api/apidom-core": "1.0.0-rc.4",
@@ -77,6 +78,7 @@
     "@swagger-api/apidom-parser-adapter-openapi-yaml-3-1": "1.0.0-rc.4",
     "@swagger-api/apidom-parser-adapter-yaml-1-2": "1.0.0-rc.4",
     "@swagger-api/apidom-reference": "1.0.0-rc.4",
-    "c12": "^3.3.2"
+    "c12": "^3.3.2",
+    "commander": "^11.1.0"
   }
 }

@@ -1,7 +1,9 @@
-import { loadConfig } from 'c12';
-import type { UserConfig } from '@hey-api/openapi-ts';
-import { defaultOpenapiGenConfig, openapiGenConfigName } from '@/plugins/config';
 import { OpenapiGenPlugin } from '@/plugins';
+import { defaultOpenapiGenConfig, openapiGenConfigName } from '@/plugins/config';
+
+import { loadConfig } from 'c12';
+
+import type { UserConfig } from '@hey-api/openapi-ts';
 
 type ResolvedOpenapiGenConfig = Omit<UserConfig, 'plugins'> & {
   openapiGenConfig: typeof defaultOpenapiGenConfig.config

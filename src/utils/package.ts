@@ -1,6 +1,7 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { PKG_PATH } from '@/utils/const';
 import { OpenApiPackageInfo, PackageJson } from '@/types';
+import { PKG_PATH } from '@/utils/const';
+
+import { readFileSync, writeFileSync } from 'fs';
 
 /**
  * Get the package.json file.

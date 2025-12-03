@@ -1,5 +1,6 @@
 import { PredicateFunc } from '@/core/predicate';
 import { VisitorHandler } from '@/core/visitors/base';
+
 import { Element } from '@swagger-api/apidom-core';
 
 /**

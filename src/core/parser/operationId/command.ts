@@ -1,13 +1,14 @@
 import { CommandParserHandler } from '@/core/parser/base';
+import { createParserHandler } from '@/core/parser/helpers';
+import { createOperationIdParser } from '@/core/parser/operationId/action';
 import { isOpenApi2, isOpenApi3x } from '@/core/predicate';
+
+import { SwaggerElement } from '@swagger-api/apidom-ns-openapi-2';
+import { OpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
 import {
   OpenApi3_1Element,
   refractorPluginNormalizeOperationIds,
 } from '@swagger-api/apidom-ns-openapi-3-1';
-import { createOperationIdParser } from '@/core/parser/operationId/action';
-import { createParserHandler } from '@/core/parser/helpers';
-import { SwaggerElement } from '@swagger-api/apidom-ns-openapi-2';
-import { OpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
 
 const operationIdParsers: CommandParserHandler[] = [
   createParserHandler(isOpenApi2, (element, options) => {

@@ -1,8 +1,8 @@
+import { Element } from '@swagger-api/apidom-core';
 import {
   isSwaggerElement as isOpenApi2Element,
   SwaggerElement,
 } from '@swagger-api/apidom-ns-openapi-2';
-import { Element } from '@swagger-api/apidom-core';
 import { isOpenApi3_0Element, OpenApi3_0Element } from '@swagger-api/apidom-ns-openapi-3-0';
 import { isOpenApi3_1Element, OpenApi3_1Element } from '@swagger-api/apidom-ns-openapi-3-1';
 

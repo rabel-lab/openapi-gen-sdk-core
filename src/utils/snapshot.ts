@@ -1,10 +1,12 @@
-import { mkdirSync, writeFileSync } from 'fs';
-import { basename as pathBasename, join as pathJoin } from 'path';
+import { parseSource } from '@/core';
+import { infoVisitor } from '@/core/visitors';
+import { OpenApiSource } from '@/types/type';
 import { SNAPSHOTS_DIR } from '@/utils/const';
 import { getPackageOpenApi } from '@/utils/package';
-import { OpenApiSource } from '@/types/type';
-import { infoVisitor } from '@/core/visitors';
-import { parseSource } from '@/core';
+
+import { mkdirSync, writeFileSync } from 'fs';
+import { basename as pathBasename, join as pathJoin } from 'path';
+
 import { toJSON, toYAML } from '@swagger-api/apidom-core';
 
 /**

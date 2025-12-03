@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import { Command } from 'commander';
 import { ciCheck, ciGenerate, ciUpdate, syncPatch, syncVersion } from '@/commands/index';
+
+import { Command } from 'commander';
+import fs from 'fs';
 
 const program = new Command();
 program.name('openapi-gen').description('OpenAPI SDK generator CLI').version('1.0.0');

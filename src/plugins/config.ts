@@ -1,6 +1,7 @@
-import { definePluginConfig } from '@hey-api/openapi-ts';
-import { OpenapiGenPlugin } from '@/plugins/types';
 import { handler } from '@/plugins/plugin';
+import { OpenapiGenPlugin } from '@/plugins/types';
+
+import { definePluginConfig } from '@hey-api/openapi-ts';
 
 export const openapiGenConfigName: OpenapiGenPlugin['Config']['name'] = '@openapiGen/core';
 export const defaultOpenapiGenConfig: OpenapiGenPlugin['Config'] = {

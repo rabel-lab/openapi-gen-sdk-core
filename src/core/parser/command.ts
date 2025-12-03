@@ -1,5 +1,6 @@
 import { CommandExecutor, CommandParserHandler, ParserHandlersShape } from '@/core/parser/base';
 import { ResolvedConfig } from '@/core/parser/operationId/action';
+
 import { Element } from '@swagger-api/apidom-core';
 
 export class ParserCommander implements CommandExecutor {

@@ -1,7 +1,8 @@
 import { isOpenApi2, isOpenApi3x } from '@/core/predicate';
-import { toValue } from '@swagger-api/apidom-core';
 import { Visitor, VisitorHandler } from '@/core/visitors/base';
 import { createVisitorHandler } from '@/core/visitors/helpers';
+
+import { toValue } from '@swagger-api/apidom-core';
 
 export type Info = {
   title: string;

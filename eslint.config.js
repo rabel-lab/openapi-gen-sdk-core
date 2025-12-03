@@ -1,4 +1,6 @@
 import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import simpleSort from 'eslint-plugin-simple-import-sort';
 
 export default [
   {
@@ -10,6 +12,10 @@ export default [
         project: './tsconfig.json',
       },
     },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      'simple-import-sort': simpleSort,
+    },
     rules: {
       'no-restricted-imports': [
         'error',
@@ -17,6 +23,18 @@ export default [
           patterns: ['./*', '../*'], // blocks both ./ and ../ relative imports
         },
       ],
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            ['^@/'], // @/... imports first
+            ['^[a-z]'], // external packages
+            ['^\\u0000'], // side effect imports
+            ['^\\.'], // relative imports last
+          ],
+        },
+      ],
+      'simple-import-sort/exports': 'error',
     },
   },
 ];
