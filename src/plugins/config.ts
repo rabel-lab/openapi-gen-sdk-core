@@ -14,6 +14,11 @@ export const defaultOpenapiGenConfig: OpenapiGenPlugin['Config'] = {
       filter: undefined,
       reject: undefined,
     },
+    snapshot: {
+      enabled: true,
+      folder: './snapshots',
+      versionStrategy: 'infer-semver', // or "manual"
+    },
   },
   handler: handler,
 };

@@ -41,6 +41,27 @@ export type OpenapiGenPluginConfig = {
      */
     reject?: () => boolean;
   };
+  /**
+   * The snapshot configuration.
+   * @default {}
+   */
+  snapshot?: {
+    /**
+     * Enable snapshot.
+     * @default true
+     */
+    enabled?: boolean;
+    /**
+     * The snapshot folder.
+     * @default './snapshots'
+     */
+    folder?: string;
+    /**
+     * The snapshot version strategy.
+     * @default 'infer-semver'
+     */
+    versionStrategy?: 'infer-semver' | 'manual';
+  };
 };
 
 export type OpenapiGenPlugin = DefinePlugin<OpenapiGenPluginConfig>;

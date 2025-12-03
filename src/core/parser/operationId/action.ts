@@ -29,6 +29,8 @@ export type ResolvedConfig = {
    * @default undefined
    */
   skipRefactoring?: boolean | SkipNormalizeFunc;
+  //! TODO:
+  //pluralize?: boolean // product/{id} → products/{id}
 };
 
 const defaultConfig: ResolvedConfig = {
