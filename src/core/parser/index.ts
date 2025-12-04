@@ -1,4 +1,4 @@
-import { ParserCommander } from '@/core/parser/command';
+import { ParserCommander } from '@/core/parser/base';
 import operationIdCommand from '@/core/parser/operationId/command';
 
 const parserCommander = new ParserCommander();

@@ -1,8 +1,4 @@
-import {
-  ParserCommandHandler,
-  ParserCommandName,
-  ParserCommandOptions,
-} from '@/core/parser/command';
+import { ParserCommandHandler, ParserCommandName, ParserCommandOptions } from '@/core/parser/base';
 import { PredicateFunc } from '@/core/predicate';
 
 import { Element } from '@swagger-api/apidom-core';

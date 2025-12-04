@@ -1,6 +1,5 @@
+import { createVisitorHandler, VisitHandler, Visitor } from '@/core/extracter/visitor';
 import { isOpenApi2, isOpenApi3x } from '@/core/predicate';
-import { Visitor, VisitorHandler } from '@/core/visitors/base';
-import { createVisitorHandler } from '@/core/visitors/helpers';
 
 import { toValue } from '@swagger-api/apidom-core';
 
@@ -13,7 +12,7 @@ export type Info = {
   };
 };
 
-type VisitorHandlers = VisitorHandler<any, Info>[];
+type VisitorHandlers = VisitHandler<any, Info>[];
 
 const infoHandlers: VisitorHandlers = [
   createVisitorHandler(isOpenApi2, (el) => {

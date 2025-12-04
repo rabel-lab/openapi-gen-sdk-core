@@ -1,3 +1,3 @@
 //-> Visitors
-import InfoVisitor from '@/core/visitors/infoVisitor';
+import InfoVisitor from '@/core/extracter/infoVisitor';
 export const infoVisitor = new InfoVisitor();

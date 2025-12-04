@@ -1,5 +1,5 @@
 import { parseSource } from '@/core';
-import { infoVisitor } from '@/core/visitors';
+import { infoVisitor } from '@/core/extracter';
 import { editPackage, getPackageOpenApi } from '@/utils/package';
 import { createSnapshot } from '@/utils/snapshot';
 
