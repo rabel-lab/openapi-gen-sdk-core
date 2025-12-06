@@ -63,7 +63,7 @@ export class Snapshot {
       typeof this.snapshotConfig.folder === 'string'
         ? this.snapshotConfig.folder
         : this.snapshotConfig.folder.root;
-    this.path = `${rootDir}/${info.version}`;
+    this.path = `${process.cwd()}/${rootDir}/${info.version}`;
     return this.path;
   }
   //-> 4. lazily compute and cache file names
