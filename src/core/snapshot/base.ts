@@ -23,8 +23,8 @@ export class Snapshot {
   private readonly sourceUrl: string;
 
   //= Load & compute
-  private openapiSource: OpenApiSource | null = null;
-  private openapiInfo: Info | null = null;
+  public openapiSource: OpenApiSource | null = null;
+  public openapiInfo: Info | null = null;
   private path: string | null = null;
   private fileNames: SnapshotConfig['files'] | null = null;
   private fileExtensions: {

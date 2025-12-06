@@ -33,7 +33,7 @@ export function createSnapshot(openApiSource: OpenApiSource) {
   const outPath = pathJoin(SNAPSHOTS_DIR, outFilename);
 
   //- Stringify
-  const outText = extension === '.json' ? toJSON(parseResult) : toYAML(parseResult);
+  const outText = extension === 'json' ? toJSON(parseResult) : toYAML(parseResult);
 
   // # Write
   writeFileSync(outPath, outText, 'utf-8');
