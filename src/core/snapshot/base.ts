@@ -23,8 +23,8 @@ export class Snapshot {
   private readonly sourceUrl: string;
 
   //= Load & compute
-  public openapiSource: OpenApiSource | null = null;
-  public openapiInfo: Info | null = null;
+  private openapiSource: OpenApiSource | null = null;
+  private openapiInfo: Info | null = null;
   private path: string | null = null;
   private fileNames: SnapshotConfig['files'] | null = null;
   private fileExtensions: {
@@ -42,20 +42,20 @@ export class Snapshot {
 
   //# Load & compute in order of dependency
   //-> 1. lazily compute and cache parsed OpenAPI source
-  private async getOpenApiSource() {
+  public async getOpenApiSource() {
     if (this.openapiSource) return this.openapiSource;
     this.openapiSource = await parseSource(this.sourceUrl);
     return this.openapiSource;
   }
   //-> 2. lazily compute and cache extracted Info
-  private getOpenApiInfo() {
+  public getOpenApiInfo() {
     if (this.openapiInfo) return this.openapiInfo;
     if (!this.openapiSource) return null;
     this.openapiInfo = infoExtracter.extract(this.openapiSource.parseResult);
     return this.openapiInfo;
   }
   //-> 3. lazily compute and cache output path
-  private getPath() {
+  public getPath() {
     if (this.path) return this.path;
     const info = this.getOpenApiInfo();
     if (!info) return null;
@@ -67,7 +67,7 @@ export class Snapshot {
     return this.path;
   }
   //-> 4. lazily compute and cache file names
-  private getFilesInfo() {
+  public getFileNames() {
     if (this.fileNames) return this.fileNames;
     this.fileNames = {
       source: `${this.snapshotConfig.files.source}`,
@@ -77,7 +77,7 @@ export class Snapshot {
     return this.fileNames;
   }
   //-> 5. lazily compute and cache values file extensions
-  private getFileExtensions() {
+  public getFileExtensions() {
     if (this.fileExtensions) return this.fileExtensions;
     let sourceExtension: SnapshotFileExtension;
     switch (this.snapshotConfig.extensions.source) {
@@ -116,7 +116,7 @@ export class Snapshot {
   private compute() {
     this.openapiInfo = this.getOpenApiInfo();
     this.path = this.getPath();
-    this.fileNames = this.getFilesInfo();
+    this.fileNames = this.getFileNames();
     this.fileExtensions = this.getFileExtensions();
     return {
       openapiInfo: this.openapiInfo,

@@ -3,6 +3,11 @@ import { SnapshotConfig } from '@/core/snapshot/config';
 
 export type OpenapiGenConfig = {
   /**
+   * The config file path.
+   * @default 'specnova.config'
+   */
+  configFile: 'specnova.config';
+  /**
    * Syncronize the OpenAPI source version with the package.json version.
    * @default false
    */
@@ -23,3 +28,5 @@ export type OpenapiGenConfig = {
    */
   snapshot?: SnapshotConfig;
 };
+
+export type ResolvedOpenapiGenConfig = Required<OpenapiGenConfig>;

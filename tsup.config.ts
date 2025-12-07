@@ -10,7 +10,7 @@ export default defineConfig([
     clean: true,
     splitting: false,
     outDir: 'dist/lib',
-    target: 'es2020',
+    target: 'es2022',
   },
   // CLI
   {
@@ -19,13 +19,12 @@ export default defineConfig([
     sourcemap: true,
     shims: true,
     clean: false,
-    external: ['commander'],
     outDir: 'dist/bin',
-    target: 'es2020',
+    target: 'es2022',
   },
   // Dev-only build
   {
-    entry: ['src/playground.dev.ts'],
+    entry: ['src/playground.dev.ts', 'openapi-ts.config.js', 'specnova.config.ts'],
     format: ['esm'],
     sourcemap: true,
     clean: false,

@@ -58,7 +58,7 @@ export type SnapshotConfig = {
   enabled?: boolean;
   /**
    * Snapshot root folder.
-   * @default SNAPSHOTS_DIR
+   * @default {...}
    */
   folder?: SnapshotFolder;
   /**
@@ -73,7 +73,7 @@ export type SnapshotConfig = {
   extensions?: SnapshotExtensions;
   /**
    * The snapshot version strategy.
-   * @default 'infer'
+   * @default {...}
    */
   versionStrategy?: VersionStrategy;
 };

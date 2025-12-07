@@ -4,4 +4,11 @@
 # Ignore Snapshots generations In this project
 /snapshots
 
+# Ignore dev files
 src/*.dev.ts
+
+# Ignore hey-api config
+openapi-ts.config.**
+specnova.config.**
+
+

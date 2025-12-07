@@ -1,7 +1,8 @@
+import resolvedConfig from '@/config';
 import { isSnapshotFileExtensionName } from '@/core/snapshot/config';
-import { OpenApiSource, SNAPSHOTS_DIR } from '@/utils';
+import { OpenApiSource } from '@/utils';
 
-import { extname as pathExtname } from 'path';
+import { extname as pathExtname, resolve as path } from 'path';
 
 import { options, parse as emptyParse } from '@swagger-api/apidom-reference/configuration/empty';
 import ApiDOMDereferenceStrategy from '@swagger-api/apidom-reference/dereference/strategies/apidom';
@@ -20,6 +21,11 @@ import OpenAPI2ResolveStrategy from '@swagger-api/apidom-reference/resolve/strat
 import OpenAPI3_0ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-0';
 import OpenAPI3_1ResolveStrategy from '@swagger-api/apidom-reference/resolve/strategies/openapi-3-1';
 
+const rootDir =
+  typeof resolvedConfig.snapshot.folder === 'string' ? resolvedConfig.snapshot.folder : '';
+
+const localRootDir = path(process.cwd(), rootDir);
+
 //-> Resolve Component
 //? https://github.com/swagger-api/apidom/tree/main/packages/apidom-reference#resolve-component
 //# Strategies
@@ -34,9 +40,9 @@ options.resolve.strategies = [
 options.resolve.resolvers = [
   new FileResolver({
     fileAllowList: [
-      `**/${SNAPSHOTS_DIR}/*.json`,
-      `**/${SNAPSHOTS_DIR}/*.yaml`,
-      `**/${SNAPSHOTS_DIR}/*.yml`,
+      `${localRootDir}/**/*.json`,
+      `${localRootDir}/**/*.yaml`,
+      `${localRootDir}/**/*.yml`,
     ],
   }),
   new HTTPResolverAxios({

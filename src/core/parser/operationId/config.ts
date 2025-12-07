@@ -5,24 +5,24 @@ export type ParserOperationIdConfig = {
    * Word to use as root path ( '/'  => 'root' )
    * @default 'root'
    */
-  rootWord: string;
+  rootWord?: string;
   /**
    * 'prefix' => {method}{...}
    * 'suffix' => {...}{method}
    * @default 'prefix'
    */
-  methodPosition: 'prefix' | 'suffix';
+  methodPosition?: 'prefix' | 'suffix';
   /**
    * 'snake' | 'camel' | 'pascal' | 'kebab'
    * @default 'camel'
    */
-  caseStyle: 'snake' | 'camel' | 'pascal' | 'kebab';
+  caseStyle?: 'snake' | 'camel' | 'pascal' | 'kebab';
   /**
    * 'by' => by{paramName}
    * 'inline' => {paramName}
    * @default 'by'
    */
-  paramStyle: 'by' | 'inline';
+  paramStyle?: 'by' | 'inline';
   /**
    * Skip refactoring if function returns true
    * @default undefined
