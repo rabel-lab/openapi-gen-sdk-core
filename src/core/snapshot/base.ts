@@ -59,7 +59,7 @@ export class Snapshot {
     return this.openapiInfo;
   }
   //-> 3. lazily compute and cache output path
-  public getPath() {
+  public getPath(version?: string) {
     if (this.path) return this.path;
     const info = this.getOpenApiInfo();
     if (!info) return null;
@@ -67,7 +67,8 @@ export class Snapshot {
       typeof this.snapshotConfig.folder === 'string'
         ? this.snapshotConfig.folder
         : this.snapshotConfig.folder.root;
-    this.path = `${process.cwd()}/${rootDir}/${info.version}`;
+    const snapshotVersion = version ? version : info.version;
+    this.path = `${process.cwd()}/${rootDir}/${snapshotVersion}`;
     return this.path;
   }
   //-> 4. lazily compute and cache file names
@@ -161,8 +162,17 @@ export class Snapshot {
     return this.load(source);
   }
   async loadVersion(version: string): Promise<this> {
-    const { source } = await this.packageHandler.getPackageOpenApi();
-    return this.load(source);
+    let currentPath = this.getPath();
+    try {
+      const path = this.getPath(version);
+      const { fileExtensions, fileNames } = this.ensureComputed();
+      const versionNormalized = `${path}/${fileNames.normalized}.${fileExtensions.normalized}`;
+      return this.load(versionNormalized);
+    } catch (e) {
+      console.error('❌ Failed to load version', e);
+      this.path = currentPath;
+    }
+    return Promise.resolve(this);
   }
   /**
    * Save the OpenAPI source to the snapshot path.
