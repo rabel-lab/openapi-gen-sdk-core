@@ -28,7 +28,7 @@ export type ParserOperationIdConfig = {
    * @default undefined
    */
   ignore?: boolean | IgnoreFunc;
-  //! TODO:
+  //!TODO:
   //pluralize?: boolean // product/{id} → products/{id}
 };
 
