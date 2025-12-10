@@ -1,9 +1,11 @@
 import { Info } from '@/core/extracter/info/type';
 import { SnapshotConfig, SnapshotFileExtension } from '@/core/snapshot/config';
 import { buildMetaFile, buildMetaPath, buildMetaSourceFiles } from '@/core/snapshot/meta/lib/build';
+import { compareSha256, digestString, Sha256String } from '@/core/snapshot/meta/lib/compare';
 import { OpenApiSource } from '@/utils';
 
 import { readFileSync, writeFileSync } from 'fs';
+import { join as pathJoin } from 'path';
 
 export type SnapshotMetaFiles = {
   names: {
@@ -20,9 +22,9 @@ export type SnapshoMetaExtension = {
   normalized: SnapshotFileExtension;
 };
 export type SnapshotMetaSignatures = {
-  source: string;
-  normalized: string;
-  meta: string;
+  source: Promise<Sha256String> | null;
+  normalized: Promise<Sha256String> | null;
+  meta: Promise<Sha256String> | null;
 };
 
 type SnapshotMetaData = {
@@ -74,9 +76,9 @@ export class SnapshotMeta extends SnapshotMetaImpl {
         files: buildMetaSourceFiles(config, openapiSource),
         config,
         sha256: {
-          source: '',
-          normalized: '',
-          meta: '',
+          source: Promise.resolve(''),
+          normalized: Promise.resolve(''),
+          meta: Promise.resolve(''),
         },
       });
     }
@@ -85,7 +87,7 @@ export class SnapshotMeta extends SnapshotMetaImpl {
   static find(version: string, config: Required<SnapshotConfig>): SnapshotMeta {
     const path = buildMetaPath(config, version);
     const metaFile = buildMetaFile();
-    const pathTo = `${path}/${metaFile.file}`;
+    const pathTo = pathJoin(path, metaFile.file);
     const text = readFileSync(pathTo);
     try {
       const meta = JSON.parse(text.toString()) as SnapshotMetaData;
@@ -98,7 +100,7 @@ export class SnapshotMeta extends SnapshotMetaImpl {
   static pull(info: Info, config: Required<SnapshotConfig>): SnapshotMeta {
     const path = buildMetaPath(config, info.version);
     const metaFile = buildMetaFile();
-    const pathTo = `${path}/${metaFile.file}`;
+    const pathTo = pathJoin(path, metaFile.file);
     const text = readFileSync(pathTo);
     try {
       const pulledMeta = JSON.parse(text.toString()) as SnapshotMetaData;
@@ -109,15 +111,67 @@ export class SnapshotMeta extends SnapshotMetaImpl {
     }
   }
 
-  public async push() {
+  //-> Public
+  /**
+   * Save the meta to the snapshot path.
+   * @returns - true if saved, false if failed
+   */
+  async push() {
     const metaFile = buildMetaFile();
-    const pathTo = `${this.path}/${metaFile.file}`;
+    const pathTo = pathJoin(this.path, metaFile.file);
     const text = JSON.stringify(this, null, 2);
     try {
       writeFileSync(pathTo, text);
+      this.digest({
+        meta: text,
+      });
       return true;
     } catch {
       throw new Error('Snapshot: failed to save meta');
     }
+  }
+
+  /**
+   * Lock a file to the meta via sha256 digest.
+   * @param target - Specific target to sync.
+   * @returns - true if saved, false if failed
+   * @default - sync all
+   */
+  async digest(digester: {
+    [key in keyof SnapshotMetaSignatures]?: string;
+  }) {
+    //-> hash all
+    Object.entries(digester).map(async ([key, value]) => {
+      const digest = digestString(value);
+      this.sha256[key as keyof SnapshotMetaSignatures] = digest;
+    });
+  }
+  /**
+   * Compare the meta to another meta.
+   * @param other - The other meta.
+   * @returns - true if identical, false if not
+   */
+  async compare(other: SnapshotMeta): Promise<boolean> {
+    //# Check if same as other
+    const sha256Compares = Object.entries(this.sha256).map(([indexKey, indexValue]) => {
+      const otherValue = other.sha256[indexKey as keyof SnapshotMetaSignatures];
+      const identical = Boolean(indexValue) === Boolean(otherValue);
+      if (identical && indexValue && otherValue) {
+        //Is: Identical && not null
+        //-> trigger comparison
+        return compareSha256([indexValue, otherValue]);
+      } else {
+        //Is: Not identical(false) : Identical && null(true)
+        return identical;
+      }
+    });
+    const matches = [
+      //# Version & path
+      this.path === other.path,
+      this.info.version === other.info.version,
+      //# sha256
+      await Promise.race(sha256Compares),
+    ];
+    return matches.every((match) => match === true);
   }
 }

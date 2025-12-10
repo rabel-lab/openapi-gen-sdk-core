@@ -48,6 +48,7 @@ export class Snapshot {
   }
   private async ensureMeta(): Promise<SnapshotMeta> {
     if (!this.meta) throw new Error('Snapshot: no meta found');
+    //!TODO: Validate meta
     return this.meta;
   }
 
@@ -60,6 +61,7 @@ export class Snapshot {
   async load(source: string): Promise<this> {
     this.sourceUrl = source;
     const openapiSource = await this.ensureOpenApiSource();
+    //!TODO: If this.meta; Compare meta
     if (openapiSource.isExternal) {
       this.meta = new SnapshotMeta({ openapiSource, config: this.snapshotConfig });
     } else {
@@ -103,6 +105,9 @@ export class Snapshot {
       await mkdir(path, { recursive: true }); // Create directory
       writeFile(fullSourcePath, sourceOutText); // Write source
       console.log(`✅ Saved source to ${fullSourcePath}`);
+      this.meta?.digest({
+        source: sourceOutText,
+      });
       return true;
     } catch (e) {
       console.error('❌ Failed to save source', e);
@@ -131,6 +136,9 @@ export class Snapshot {
       await mkdir(path, { recursive: true }); // Create directory
       writeFile(fullNormalizedPath, normalizedOutText);
       console.log(`✅ Saved normalized to ${fullNormalizedPath}`);
+      this.meta?.digest({
+        source: normalizedOutText,
+      });
       return true;
     } catch (e) {
       console.error('❌ Failed to save normalized', e);
