@@ -19,7 +19,7 @@ export class Converter {
     return this.getApiDomConverter(extension)(element);
   }
   fromJson<T extends Object>(json: T, readable: boolean = false): string {
-    return JSON.stringify(json, null, readable ? '\n' : 0);
+    return JSON.stringify(json, null, readable ? 2 : 0);
   }
   fromText<T extends Object>(text: string, extension: ConverterExtension): T {
     let o: T;
