@@ -1,6 +1,6 @@
 import resolvedConfig from '@/config';
 import { defaultOpenapiGenConfig } from '@/config/default';
-import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
+import { OpenapiGenConfig, Resolved, ResolvedOpenapiGenConfig } from '@/config/type';
 import { hasNormalize, mergeWithDefaults } from '@/config/utils';
 import converter from '@/core/converter';
 import parserCommander from '@/core/parser';
@@ -16,7 +16,7 @@ export class Snapshot {
   //= initialize
   private packageHandler: NpmPackage = new NpmPackage();
   private readonly config: ResolvedOpenapiGenConfig = resolvedConfig;
-  private readonly snapshotConfig: Required<SnapshotConfig>;
+  private readonly snapshotConfig: Resolved<SnapshotConfig>;
   private sourceUrl: string = '';
 
   //= OpenAPI source
@@ -27,9 +27,9 @@ export class Snapshot {
   //# Constructor
   constructor(config?: OpenapiGenConfig) {
     //-> Apply config to default config
-    this.config = mergeWithDefaults(defaultOpenapiGenConfig, config ?? this.config);
+    this.config = mergeWithDefaults(defaultOpenapiGenConfig, config);
     //-> Apply snapshot config to default snapshot config
-    this.snapshotConfig = mergeWithDefaults(defaultSnapshotConfig, this.config.snapshot);
+    this.snapshotConfig = mergeWithDefaults(defaultSnapshotConfig, config?.snapshot);
   }
   //-> Lazily compute and cache parsed OpenAPI source
   public async getOpenApiSource() {

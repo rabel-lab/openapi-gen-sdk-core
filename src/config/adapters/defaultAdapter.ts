@@ -1,6 +1,6 @@
 import { BaseAdapter, BaseAdapterOptionsWithFile, FileAdapter } from '@/config/adapters/base';
 import { Config } from '@/config/base';
-import { OpenapiGenConfig } from '@/config/type';
+import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
 import { mergeWithDefaults } from '@/config/utils';
 
 import { loadConfig } from 'c12';
@@ -21,7 +21,7 @@ export class DefaultAdapter extends FileAdapter {
   constructor(options?: BaseAdapterOptionsWithFile) {
     super(options);
   }
-  async transform(externalConfig: Required<OpenapiGenConfig>) {
+  async transform(externalConfig: ResolvedOpenapiGenConfig) {
     const resolvedConfig = await loadConfig<ConfigOptions>({
       cwd: Config.getConfigRootDir(),
       configFile: externalConfig.configFile,
@@ -38,6 +38,10 @@ export class DefaultAdapter extends FileAdapter {
       modifiedExternalConfig = mergeWithDefaults(modifiedExternalConfig, adapterResult);
     }
     //-> apply default config
-    return mergeWithDefaults(modifiedExternalConfig, resolvedConfig.config.baseConfig ?? {});
+    const finalConfig = mergeWithDefaults(
+      modifiedExternalConfig,
+      resolvedConfig.config.baseConfig ?? {},
+    );
+    return finalConfig;
   }
 }

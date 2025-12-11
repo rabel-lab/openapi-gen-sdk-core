@@ -1,3 +1,5 @@
+import { Resolved } from '@/config/type';
+
 export type IgnoreFunc = (path: string, method: string) => boolean;
 
 export type ParserOperationIdConfig = {
@@ -32,7 +34,7 @@ export type ParserOperationIdConfig = {
   //pluralize?: boolean // product/{id} → products/{id}
 };
 
-export const defaultParserOperationIdConfig: Required<ParserOperationIdConfig> = {
+export const defaultParserOperationIdConfig: Resolved<ParserOperationIdConfig> = {
   rootWord: 'root',
   methodPosition: 'prefix',
   case: 'camel',

@@ -16,7 +16,7 @@ export class BaseAdapter<T extends ResolvedOpenapiGenConfig = ResolvedOpenapiGen
     if (!options) return;
     this.name = options.name;
   }
-  async transform(externalConfig: Required<T>): Promise<Required<T>> {
+  async transform(externalConfig: T): Promise<T> {
     return externalConfig;
   }
 }
@@ -30,7 +30,7 @@ export class FileAdapter<
     if (!options) return;
     this.processor = options.processor;
   }
-  async transform(externalConfig: Required<T>): Promise<Required<T>> {
+  async transform(externalConfig: T): Promise<T> {
     return externalConfig;
   }
 }

@@ -1,13 +1,13 @@
 import { defaultOpenapiGenConfig } from '@/config/default';
-import { OpenapiGenConfig } from '@/config/type';
+import { OpenapiGenConfig, Resolved } from '@/config/type';
 
 /**
  * Generic "defaults + overrides" deep merger that removes all undefined values
  */
 export function mergeWithDefaults<T extends object>(
-  defaults: Required<T>,
-  overrides: Partial<T> | undefined,
-): Required<T> {
+  defaults: Resolved<T>,
+  overrides: Partial<T> | Resolved<T> | undefined,
+): Resolved<T> {
   const isPlainObject = (v: unknown): v is Record<string, unknown> =>
     v !== null && typeof v === 'object' && !Array.isArray(v);
 
@@ -34,7 +34,7 @@ export function mergeWithDefaults<T extends object>(
       const override = overrides?.[key as keyof T];
       return [key, deepMerge(value, override)];
     }),
-  ) as Required<T>;
+  ) as Resolved<T>;
 }
 
 /**

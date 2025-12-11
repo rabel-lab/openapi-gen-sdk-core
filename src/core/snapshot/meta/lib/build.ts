@@ -1,3 +1,4 @@
+import { Resolved } from '@/config/type';
 import { SnapshotConfig, SnapshotFileExtension } from '@/core/snapshot/config';
 import { SnapshotMetaFiles } from '@/core/snapshot/meta/base';
 import { OpenApiSource } from '@/utils';
@@ -5,7 +6,7 @@ import { OpenApiSource } from '@/utils';
 const META_EXT = 'json' satisfies SnapshotFileExtension;
 const META_FILE = `meta.${META_EXT}`;
 
-export function buildMetaPath(snapshotConfig: Required<SnapshotConfig>, version: string): string {
+export function buildMetaPath(snapshotConfig: Resolved<SnapshotConfig>, version: string): string {
   const rootDir =
     typeof snapshotConfig.folder === 'string' ? snapshotConfig.folder : snapshotConfig.folder.root;
   return `${rootDir}/${version}`;
@@ -21,7 +22,7 @@ export function buildMetaFile(): { file: string; extension: SnapshotFileExtensio
 }
 
 export function buildMetaSourceFiles(
-  config: Required<SnapshotConfig>,
+  config: Resolved<SnapshotConfig>,
   openapiSource: OpenApiSource,
 ): SnapshotMetaFiles {
   let sourceExtension: SnapshotFileExtension;

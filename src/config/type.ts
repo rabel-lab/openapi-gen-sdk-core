@@ -29,8 +29,8 @@ export type OpenapiGenConfig = {
   snapshot?: SnapshotConfig;
 };
 
-type DeepRequired<T> = {
-  [K in keyof T]-?: T[K] extends object ? DeepRequired<T[K]> : T[K];
+export type Resolved<T> = T & {
+  [K in keyof T]-?: Resolved<T[K]>;
 };
 
-export type ResolvedOpenapiGenConfig = DeepRequired<OpenapiGenConfig>;
+export type ResolvedOpenapiGenConfig = Resolved<OpenapiGenConfig>;

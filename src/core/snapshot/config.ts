@@ -1,3 +1,5 @@
+import { Resolved } from '@/config/type';
+
 const SNAPSHOTS_DIR = 'snapshots';
 const SOURCE_FILENAME = 'source';
 const NORMALIZED_FILENAME = 'normalized';
@@ -96,7 +98,7 @@ export function isSnapshotFileExtensionName(extension: string): extension is Sna
   );
 }
 
-export const defaultSnapshotConfig: Required<SnapshotConfig> = {
+export const defaultSnapshotConfig: Resolved<SnapshotConfig> = {
   enabled: true,
   folder: SNAPSHOTS_DIR,
   files: {
