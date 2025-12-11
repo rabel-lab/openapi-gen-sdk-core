@@ -10,15 +10,16 @@
   },
   "devDependencies": {
     "@specnova/eslint-config": "workspace:*",
-    "husky": "^9.1.7",
     "eslint": "^9.39.1",
-    "prettier": "^3.7.3",
-    "lint-staged": "^16.2.7"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.3"
   },
   "scripts": {
     "prepare": "husky",
     "lint": "turbo run lint",
-    "format": "turbo run format"
+    "format": "turbo run format",
+    "publish-packages": "turbo run lint build test && changeset version && changeset publish"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx,js,jsx}": [
@@ -27,5 +28,8 @@
       "git add"
     ]
   },
-  "packageManager": "pnpm@10.19.0"
+  "packageManager": "pnpm@10.19.0",
+  "dependencies": {
+    "@changesets/cli": "^2.29.8"
+  }
 }
