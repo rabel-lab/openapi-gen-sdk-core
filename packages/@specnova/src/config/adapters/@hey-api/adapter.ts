@@ -8,7 +8,7 @@ import { loadConfig } from 'c12';
 
 import type { UserConfig } from '@hey-api/openapi-ts';
 
-function isOpenApiGenPlugin(plugin: unknown): plugin is HeyApiPlugin['Config'] {
+function isHeyApiPlugin(plugin: unknown): plugin is HeyApiPlugin['Config'] {
   return typeof plugin === 'object' && plugin !== null && (plugin as any).name === heyApiPluginName;
 }
 
@@ -23,7 +23,7 @@ export class HeyApiAdapater extends FileAdapter {
     const { plugins } = config;
     let pluginConfig: Partial<SpecnovaConfig> = {};
     plugins?.forEach((p) => {
-      if (isOpenApiGenPlugin(p)) {
+      if (isHeyApiPlugin(p)) {
         pluginConfig = p.config;
       }
     });
