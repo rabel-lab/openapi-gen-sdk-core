@@ -1,12 +1,12 @@
-import { ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig } from '@/config/type';
 import { SnapshotFileExtension } from '@/core/snapshot/config';
 import { SnapshotMetaFiles } from '@/core/snapshot/meta/base';
-import { OpenApiSource } from '@/types';
+import { SpecnovaSource } from '@/types';
 
 const META_EXT = 'json' satisfies SnapshotFileExtension;
 const META_FILE = `meta.${META_EXT}`;
 
-export function buildMetaPath(config: ResolvedOpenapiGenConfig, version: string): string {
+export function buildMetaPath(config: ResolvedSpecnovaConfig, version: string): string {
   const snapshotConfig = config.snapshot;
   const rootDir =
     typeof snapshotConfig.folder === 'string' ? snapshotConfig.folder : snapshotConfig.folder.root;
@@ -23,8 +23,8 @@ export function buildMetaFile(): { file: string; extension: SnapshotFileExtensio
 }
 
 export function buildMetaSourceFiles(
-  config: ResolvedOpenapiGenConfig,
-  openapiSource: OpenApiSource,
+  config: ResolvedSpecnovaConfig,
+  specnovaSource: SpecnovaSource,
 ): SnapshotMetaFiles {
   const snapshotConfig = config.snapshot;
   let sourceExtension: SnapshotFileExtension;
@@ -37,7 +37,7 @@ export function buildMetaSourceFiles(
       break;
     case 'infer':
     default:
-      sourceExtension = openapiSource!.extension;
+      sourceExtension = specnovaSource!.extension;
   }
   let normalizedExtension: SnapshotFileExtension;
   switch (snapshotConfig.extensions.normalized) {
@@ -45,7 +45,7 @@ export function buildMetaSourceFiles(
       normalizedExtension = 'yaml';
       break;
     case 'infer':
-      normalizedExtension = openapiSource!.extension;
+      normalizedExtension = specnovaSource!.extension;
     case 'json':
     default:
       normalizedExtension = 'json';

@@ -1,10 +1,10 @@
-import { ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig } from '@/config/type';
 import converter from '@/core/converter';
 import { Info } from '@/core/extracter/info/type';
 import { SnapshotFileExtension, SnapshotFileSlots } from '@/core/snapshot/config';
 import { buildMetaFile, buildMetaPath, buildMetaSourceFiles } from '@/core/snapshot/meta/lib/build';
 import { compareSha256, digestString, Sha256String } from '@/core/snapshot/meta/lib/compare';
-import { OpenApiSource } from '@/types';
+import { SpecnovaSource } from '@/types';
 
 import { readFileSync } from 'fs';
 import { mkdir, rename, rm, writeFile } from 'fs/promises';
@@ -29,7 +29,7 @@ export type SnapshotMetaHashes = {
 type SnapshotMetaData = {
   info: Info;
   path: string;
-  config: ResolvedOpenapiGenConfig;
+  config: ResolvedSpecnovaConfig;
   files: SnapshotMetaFiles;
   sha256: SnapshotMetaHashes;
 };
@@ -187,21 +187,21 @@ class SnapshotMetaImpl {
 
 export class SnapshotMeta extends SnapshotMetaImpl {
   constructor(args: { meta: SnapshotMetaData });
-  constructor(args: { openapiSource: OpenApiSource; config: ResolvedOpenapiGenConfig });
+  constructor(args: { specnovaSource: SpecnovaSource; config: ResolvedSpecnovaConfig });
   constructor(
     args:
       | { meta: SnapshotMetaData }
-      | { openapiSource: OpenApiSource; config: ResolvedOpenapiGenConfig },
+      | { specnovaSource: SpecnovaSource; config: ResolvedSpecnovaConfig },
   ) {
     if ('meta' in args) {
       super(args.meta);
       return;
-    } else if ('openapiSource' in args && 'config' in args) {
-      const { openapiSource, config } = args;
+    } else if ('specnovaSource' in args && 'config' in args) {
+      const { specnovaSource, config } = args;
       super({
-        info: openapiSource.info,
-        path: buildMetaPath(config, openapiSource.info.version),
-        files: buildMetaSourceFiles(config, openapiSource),
+        info: specnovaSource.info,
+        path: buildMetaPath(config, specnovaSource.info.version),
+        files: buildMetaSourceFiles(config, specnovaSource),
         config,
         sha256: {
           source: Promise.resolve(''),
@@ -212,7 +212,7 @@ export class SnapshotMeta extends SnapshotMetaImpl {
       throw new Error('Snapshot: invalid meta constructor');
     }
   }
-  static pull(version: string, config: ResolvedOpenapiGenConfig): SnapshotMeta {
+  static pull(version: string, config: ResolvedSpecnovaConfig): SnapshotMeta {
     const path = buildMetaPath(config, version);
     const metaFile = buildMetaFile();
     const pathTo = pathJoin(path, metaFile.file);

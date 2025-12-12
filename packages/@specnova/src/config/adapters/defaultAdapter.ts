@@ -1,6 +1,6 @@
 import { BaseAdapter, BaseAdapterOptionsWithFile, FileAdapter } from '@/config/adapters/base';
 import { Config } from '@/config/base';
-import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
+import { SpecnovaConfig, ResolvedSpecnovaConfig } from '@/config/type';
 import { mergeWithDefaults } from '@/config/utils';
 
 import { loadConfig } from 'c12';
@@ -8,7 +8,7 @@ export const defaultAdapterName = 'default';
 
 type ConfigOptions = {
   adapter?: BaseAdapter;
-  baseConfig?: OpenapiGenConfig;
+  baseConfig?: SpecnovaConfig;
 };
 
 export function defineConfig(ConfigOptions: ConfigOptions): ConfigOptions {
@@ -17,11 +17,11 @@ export function defineConfig(ConfigOptions: ConfigOptions): ConfigOptions {
 
 export class DefaultAdapter extends FileAdapter {
   name: string = defaultAdapterName;
-  processor: typeof loadConfig<OpenapiGenConfig> = loadConfig;
+  processor: typeof loadConfig<SpecnovaConfig> = loadConfig;
   constructor(options?: BaseAdapterOptionsWithFile) {
     super(options);
   }
-  async transform(externalConfig: ResolvedOpenapiGenConfig) {
+  async transform(externalConfig: ResolvedSpecnovaConfig) {
     const resolvedConfig = await loadConfig<ConfigOptions>({
       cwd: Config.getConfigRootDir(),
       configFile: externalConfig.configFile,

@@ -1,14 +1,14 @@
 import { ParserConfig } from '@/core/parser/config';
 import { SnapshotConfig } from '@/core/snapshot/config';
 
-export type OpenapiGenConfig = {
+export type SpecnovaConfig = {
   /**
    * The config file path.
    * @default 'specnova.config'
    */
   configFile?: 'specnova.config' | string;
   /**
-   * Syncronize the OpenAPI source version with the package.json version.
+   * Syncronize the Specnova source version with the package.json version.
    * @default false
    */
   syncVersion?: boolean;
@@ -33,4 +33,4 @@ export type Resolved<T> = T & {
   [K in keyof T]-?: Resolved<T[K]>;
 };
 
-export type ResolvedOpenapiGenConfig = Resolved<OpenapiGenConfig>;
+export type ResolvedSpecnovaConfig = Resolved<SpecnovaConfig>;

@@ -1,10 +1,10 @@
-import { OpenapiGenConfig } from '@/config/type';
+import { SpecnovaConfig } from '@/config/type';
 
 import type { DefinePlugin } from '@hey-api/openapi-ts';
 
-export const heyApiPluginName = '@openapiGen/core' as const;
+export const heyApiPluginName = '@specnova' as const;
 export type HeyApiUserConfig = {
   name: typeof heyApiPluginName;
-} & Partial<OpenapiGenConfig>;
+} & Partial<SpecnovaConfig>;
 
 export type HeyApiPlugin = DefinePlugin<HeyApiUserConfig>;

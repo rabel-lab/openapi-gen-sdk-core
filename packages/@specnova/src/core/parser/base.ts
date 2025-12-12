@@ -1,5 +1,5 @@
-import { defaultOpenapiGenConfig } from '@/config/default';
-import { OpenapiGenConfig } from '@/config/type';
+import { defaultSpecnovaGenConfig } from '@/config/default';
+import { SpecnovaConfig } from '@/config/type';
 import { hasNormalize, mergeWithDefaults } from '@/config/utils';
 import { ParserConfig } from '@/core/parser/config';
 import { PredicateFunc } from '@/core/predicate';
@@ -61,8 +61,8 @@ export class ParserCommander implements ParserCommanderImpl {
     }
     throw new Error('ParserCommander: no handler found');
   }
-  byConfig<T extends Element>(element: T, config?: OpenapiGenConfig): T {
-    const mergedConfig = mergeWithDefaults(defaultOpenapiGenConfig, config);
+  byConfig<T extends Element>(element: T, config?: SpecnovaConfig): T {
+    const mergedConfig = mergeWithDefaults(defaultSpecnovaGenConfig, config);
     if (!mergedConfig.normalized || !hasNormalize(mergedConfig)) {
       console.log('✅ No normalization settings found');
       return element;

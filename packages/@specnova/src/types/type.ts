@@ -3,7 +3,7 @@ import { SnapshotFileExtension } from '@/core/snapshot/config';
 
 import { Element } from '@swagger-api/apidom-core';
 
-export type OpenApiSource = {
+export type SpecnovaSource = {
   source: string;
   info: Info;
   parseResult: Element;

@@ -1,4 +1,4 @@
-import { defaultOpenapiGenConfig } from '@/config/default';
+import { defaultSpecnovaGenConfig } from '@/config/default';
 import { ParserCommandHandler, ParserCommandName, ParserCommandOptions } from '@/core/parser/base';
 import { PredicateFunc } from '@/core/predicate';
 
@@ -40,7 +40,7 @@ type RefractablePluginShape = (toolbox?: any) => {
 export class RefractablePlugin {
   public plugin: (option?: ParserCommandOptions) => RefractablePluginShape;
   public Element: Refractable;
-  private readonly defaultOption: ParserCommandOptions = defaultOpenapiGenConfig.normalized;
+  private readonly defaultOption: ParserCommandOptions = defaultSpecnovaGenConfig.normalized;
   constructor(
     plugin: (option?: ParserCommandOptions) => RefractablePluginShape,
     refractor?: Refractable,

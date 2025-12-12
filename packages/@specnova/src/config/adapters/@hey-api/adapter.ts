@@ -1,7 +1,7 @@
 import { HeyApiPlugin, heyApiPluginName } from '@/config/adapters/@hey-api/type';
 import { BaseAdapterOptionsWithFile, FileAdapter } from '@/config/adapters/base';
 import { Config } from '@/config/base';
-import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig, SpecnovaConfig } from '@/config/type';
 import { mergeWithDefaults } from '@/config/utils';
 
 import { loadConfig } from 'c12';
@@ -19,9 +19,9 @@ export class HeyApiAdapater extends FileAdapter {
   constructor(options?: BaseAdapterOptionsWithFile) {
     super(options);
   }
-  private findConfig(config: UserConfig): Partial<OpenapiGenConfig> {
+  private findConfig(config: UserConfig): Partial<SpecnovaConfig> {
     const { plugins } = config;
-    let pluginConfig: Partial<OpenapiGenConfig> = {};
+    let pluginConfig: Partial<SpecnovaConfig> = {};
     plugins?.forEach((p) => {
       if (isOpenApiGenPlugin(p)) {
         pluginConfig = p.config;
@@ -29,7 +29,7 @@ export class HeyApiAdapater extends FileAdapter {
     });
     return pluginConfig;
   }
-  async transform(externalConfig: ResolvedOpenapiGenConfig): Promise<ResolvedOpenapiGenConfig> {
+  async transform(externalConfig: ResolvedSpecnovaConfig): Promise<ResolvedSpecnovaConfig> {
     const resolvedConfig = await this.processor({
       cwd: Config.getConfigRootDir(),
       configFile: this.filePath,

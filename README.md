@@ -1,4 +1,4 @@
-# Openapi-gen-sdk-core
+# Specnova-gen-sdk-core
 
 `openapi-gen-sdk-core` wants to be a lightweight toolkit designed to generate, update, and maintain internal SDKs from external OpenAPI sources;
 

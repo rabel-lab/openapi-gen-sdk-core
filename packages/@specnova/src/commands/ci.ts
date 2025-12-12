@@ -5,22 +5,23 @@ import { NpmPackage } from '@/npm/base';
 import { execSync } from 'child_process';
 
 export async function ciCheck() {
-  const { version: pkgOpenApiVersion, source: pkgOpenApiSource } = NpmPackage.getPackage().specnova;
-  const { parseResult } = await parseSource(pkgOpenApiSource);
+  const { version: pkgSpecnovaVersion, source: pkgSpecnovaSource } =
+    NpmPackage.getPackage().specnova;
+  const { parseResult } = await parseSource(pkgSpecnovaSource);
   const externalVersion = infoExtracter.extract(parseResult).version;
-  if (pkgOpenApiVersion === externalVersion) {
+  if (pkgSpecnovaVersion === externalVersion) {
     console.log('✅ Local patch is up to date.');
     return false;
   }
-  console.log(`🚨 Update available: ${pkgOpenApiVersion} → ${externalVersion}`);
+  console.log(`🚨 Update available: ${pkgSpecnovaVersion} → ${externalVersion}`);
   return true;
 }
 
 export async function ciUpdate() {
   const pkg = new NpmPackage();
-  const { source: pkgOpenApiSource } = NpmPackage.getPackage().specnova;
-  const openApiSource = await parseSource(pkgOpenApiSource);
-  const version = infoExtracter.extract(openApiSource.parseResult).version;
+  const { source: pkgSpecnovaSource } = NpmPackage.getPackage().specnova;
+  const specnovaSource = await parseSource(pkgSpecnovaSource);
+  const version = infoExtracter.extract(specnovaSource.parseResult).version;
   pkg.editPackage({ version });
   return version;
 }

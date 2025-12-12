@@ -1,15 +1,15 @@
 import { BaseAdapter } from '@/config/adapters/base';
 import { DefaultAdapter } from '@/config/adapters/defaultAdapter';
-import { defaultOpenapiGenConfig } from '@/config/default';
+import { defaultSpecnovaGenConfig } from '@/config/default';
 import { loadEnvConfig } from '@/config/env';
-import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig, SpecnovaConfig } from '@/config/type';
 import { mergeWithDefaults } from '@/config/utils';
 
 type Adapter = BaseAdapter;
 
 type ConfigOptions = {
   adapter?: Adapter;
-  config?: Partial<OpenapiGenConfig>;
+  config?: Partial<SpecnovaConfig>;
 };
 
 // Apply & load env config
@@ -17,7 +17,7 @@ await loadEnvConfig();
 
 export class Config {
   private adapter: Adapter;
-  private resolved: Promise<ResolvedOpenapiGenConfig> | ResolvedOpenapiGenConfig;
+  private resolved: Promise<ResolvedSpecnovaConfig> | ResolvedSpecnovaConfig;
 
   //-> Static Helpers
   static getConfigRootDir(subPath?: string): string {
@@ -27,11 +27,11 @@ export class Config {
 
   constructor(options?: ConfigOptions) {
     this.adapter = options?.adapter ?? new DefaultAdapter();
-    this.resolved = mergeWithDefaults(defaultOpenapiGenConfig, options?.config ?? {});
+    this.resolved = mergeWithDefaults(defaultSpecnovaGenConfig, options?.config ?? {});
   }
   /**
    * Load config from adapters.
-   * @returns - OpenapiGenConfig
+   * @returns - SpecnovaGenConfig
    */
   private async applyAdapter() {
     const adapter = this.adapter;
@@ -43,7 +43,7 @@ export class Config {
   }
   /**
    * Load config from adapters.
-   * @returns - OpenapiGenConfig
+   * @returns - SpecnovaGenConfig
    */
   public async load() {
     await this.applyAdapter();
@@ -51,7 +51,7 @@ export class Config {
   }
   /**
    * Get resolved config.
-   * @returns - OpenapiGenConfig
+   * @returns - SpecnovaGenConfig
    */
   async getConfig() {
     return await Promise.resolve(this.resolved);

@@ -1,6 +1,6 @@
 // Adapter interface for external tool configs
 
-import { ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig } from '@/config/type';
 
 export type BaseAdapterOptions = {
   name: string;
@@ -10,7 +10,7 @@ export type BaseAdapterOptionsWithFile = BaseAdapterOptions & {
   processor: (...args: any[]) => any;
 };
 
-export class BaseAdapter<T extends ResolvedOpenapiGenConfig = ResolvedOpenapiGenConfig> {
+export class BaseAdapter<T extends ResolvedSpecnovaConfig = ResolvedSpecnovaConfig> {
   public name: string | null = null;
   constructor(options?: BaseAdapterOptions) {
     if (!options) return;
@@ -22,7 +22,7 @@ export class BaseAdapter<T extends ResolvedOpenapiGenConfig = ResolvedOpenapiGen
 }
 
 export class FileAdapter<
-  T extends ResolvedOpenapiGenConfig = ResolvedOpenapiGenConfig,
+  T extends ResolvedSpecnovaConfig = ResolvedSpecnovaConfig,
 > extends BaseAdapter<T> {
   protected processor: (...args: any[]) => any = () => {};
   constructor(options?: BaseAdapterOptionsWithFile) {

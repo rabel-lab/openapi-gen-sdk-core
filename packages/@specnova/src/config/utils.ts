@@ -1,5 +1,5 @@
-import { defaultOpenapiGenConfig } from '@/config/default';
-import { OpenapiGenConfig, Resolved } from '@/config/type';
+import { defaultSpecnovaGenConfig } from '@/config/default';
+import { SpecnovaConfig, Resolved } from '@/config/type';
 
 /**
  * Generic "defaults + overrides" deep merger that removes all undefined values
@@ -42,8 +42,8 @@ export function mergeWithDefaults<T extends object>(
  * @param config - config
  * @returns true if there are normalization operations, false otherwise
  */
-export function hasNormalize(config: OpenapiGenConfig): boolean {
-  const { normalized } = mergeWithDefaults(defaultOpenapiGenConfig, config);
+export function hasNormalize(config: SpecnovaConfig): boolean {
+  const { normalized } = mergeWithDefaults(defaultSpecnovaGenConfig, config);
   if (!normalized) return false;
   return Object.values(normalized).some(Boolean);
 }

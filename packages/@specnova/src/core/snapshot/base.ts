@@ -1,42 +1,42 @@
 import resolvedConfig from '@/config';
-import { OpenapiGenConfig, ResolvedOpenapiGenConfig } from '@/config/type';
+import { ResolvedSpecnovaConfig, SpecnovaConfig } from '@/config/type';
 import { hasNormalize, mergeWithDefaults } from '@/config/utils';
 import converter from '@/core/converter';
 import parserCommander from '@/core/parser';
 import { parseSource } from '@/core/reference';
 import { SnapshotMeta } from '@/core/snapshot/meta/base';
 import { NpmPackage } from '@/npm/base';
-import { OpenApiSource } from '@/types';
+import { SpecnovaSource } from '@/types';
 
 import { join as pathJoin } from 'path';
 
 export class Snapshot {
   //= initialize
   private packageHandler: NpmPackage = new NpmPackage();
-  private readonly config: ResolvedOpenapiGenConfig = resolvedConfig;
+  private readonly config: ResolvedSpecnovaConfig = resolvedConfig;
   private sourceUrl: string = '';
 
   //= OpenAPI source
-  private openapiSource: OpenApiSource | null = null;
+  private specnovaSource: SpecnovaSource | null = null;
   //= Meta
   private meta: SnapshotMeta | null = null;
 
   //# Constructor
-  constructor(config?: OpenapiGenConfig) {
+  constructor(config?: SpecnovaConfig) {
     //-> Apply config to default config
     this.config = mergeWithDefaults(this.config, config);
   }
   //-> Lazily compute and cache parsed OpenAPI source
-  public async getOpenApiSource() {
-    if (this.openapiSource) return this.openapiSource;
-    this.openapiSource = await parseSource(this.sourceUrl);
-    return this.openapiSource;
+  public async getSpecnovaSource() {
+    if (this.specnovaSource) return this.specnovaSource;
+    this.specnovaSource = await parseSource(this.sourceUrl);
+    return this.specnovaSource;
   }
   //-> Ensure data
-  private async ensureOpenApiSource(): Promise<OpenApiSource> {
-    const openapiSource = await this.getOpenApiSource();
-    if (!openapiSource) throw new Error('Snapshot: no OpenAPI source found');
-    return openapiSource;
+  private async ensureSpecnovaSource(): Promise<SpecnovaSource> {
+    const specnovaSource = await this.getSpecnovaSource();
+    if (!specnovaSource) throw new Error('Snapshot: no OpenAPI source found');
+    return specnovaSource;
   }
   private ensureMeta(): SnapshotMeta {
     if (!this.meta) throw new Error('Snapshot: no meta found');
@@ -51,14 +51,14 @@ export class Snapshot {
    */
   async load(source: string): Promise<this> {
     this.sourceUrl = source;
-    const openapiSource = await this.ensureOpenApiSource();
+    const specnovaSource = await this.ensureSpecnovaSource();
     const hasMeta = !!this.meta;
     // Ccompute the snapshot path and create a new meta.
     let newMeta: SnapshotMeta;
-    if (openapiSource.isExternal) {
-      newMeta = new SnapshotMeta({ openapiSource, config: this.config });
+    if (specnovaSource.isExternal) {
+      newMeta = new SnapshotMeta({ specnovaSource, config: this.config });
     } else {
-      newMeta = SnapshotMeta.pull(openapiSource.info.version, this.config);
+      newMeta = SnapshotMeta.pull(specnovaSource.info.version, this.config);
     }
     // If already hase a meta
     if (!hasMeta) {
@@ -74,7 +74,7 @@ export class Snapshot {
    * @returns - this
    */
   async loadMain(): Promise<this> {
-    const { source } = await this.packageHandler.getPackageOpenApi();
+    const { source } = await this.packageHandler.getPackageSpecnova();
     return this.load(source);
   }
   /**
@@ -94,11 +94,11 @@ export class Snapshot {
    * @returns - true if saved, false if failed
    */
   async saveSource(): Promise<boolean> {
-    const openapiSource = await this.ensureOpenApiSource();
+    const specnovaSource = await this.ensureSpecnovaSource();
     const meta = this.ensureMeta();
     const { files } = meta.get();
     //# Write source
-    const sourceOutText = converter.fromApiDom(openapiSource.parseResult, files.extensions.source);
+    const sourceOutText = converter.fromApiDom(specnovaSource.parseResult, files.extensions.source);
     try {
       meta.addDocument({
         source: sourceOutText,
@@ -120,11 +120,11 @@ export class Snapshot {
       return true;
     }
     //# Get normalized file location
-    const openapiSource = await this.ensureOpenApiSource();
+    const specnovaSource = await this.ensureSpecnovaSource();
     const meta = this.ensureMeta();
     const { files } = meta.get();
     //# Apply normalization
-    const normalizedElement = parserCommander.byConfig(openapiSource.parseResult, this.config);
+    const normalizedElement = parserCommander.byConfig(specnovaSource.parseResult, this.config);
     //# Write normalized
     const normalizedOutText = converter.fromApiDom(normalizedElement, files.extensions.normalized);
     try {

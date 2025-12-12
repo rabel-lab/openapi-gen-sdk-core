@@ -46,7 +46,7 @@ export class NpmPackage {
     this.packageJson = pkg;
   }
 
-  async getPackageOpenApi() {
+  async getPackageSpecnova() {
     const pkg = this.packageJson;
     const { source, version } = pkg['specnova'] || {
       source: '',

@@ -1,7 +1,7 @@
 import resolvedConfig from '@/config';
 import { infoExtracter } from '@/core/extracter';
 import { isSnapshotFileExtensionName } from '@/core/snapshot/config';
-import { OpenApiSource } from '@/types';
+import { SpecnovaSource } from '@/types';
 
 import { extname as pathExtname, resolve as path } from 'path';
 
@@ -104,9 +104,9 @@ const populatedParse = emptyParse;
 /**
  * Parse a given OpenAPI spec source (URL or local file path).
  * @param source - The OpenAPI spec source.
- * @returns - OpenApiSource
+ * @returns - SpecnovaSource
  */
-export async function parseSource(source: string): Promise<OpenApiSource> {
+export async function parseSource(source: string): Promise<SpecnovaSource> {
   console.log('🔨 Extracting OpenAPI spec from:', source);
   //# Parse
   const parsed = await populatedParse(source);
