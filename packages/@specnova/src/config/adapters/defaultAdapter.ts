@@ -1,6 +1,6 @@
 import { BaseAdapterOptionsWithFile, FileAdapter } from '@/config/adapters/base';
 import { UserConfig, UserConfigOptions } from '@/config/base';
-import { UserConfigLoader } from '@/config/loader';
+import { createLoader } from '@/config/loader';
 import { ResolvedSpecnovaConfig } from '@/config/type';
 import { mergeWithDefaults } from '@/config/utils';
 
@@ -12,12 +12,12 @@ export function defineConfig(ConfigOptions: UserConfigOptions): UserConfigOption
 
 export class DefaultAdapter extends FileAdapter {
   name: string = defaultAdapterName;
-  processor: typeof UserConfigLoader = UserConfigLoader;
+  loader = createLoader<UserConfigOptions>();
   constructor(options?: BaseAdapterOptionsWithFile) {
     super(options);
   }
   async transform(externalConfig: ResolvedSpecnovaConfig) {
-    const resolvedConfig = await UserConfigLoader({
+    const resolvedConfig = await this.loader({
       cwd: UserConfig.getConfigRootDir(),
       configFile: externalConfig.configFile,
       packageJson: true,
