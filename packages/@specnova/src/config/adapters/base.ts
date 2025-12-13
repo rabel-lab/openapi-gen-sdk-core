@@ -7,7 +7,7 @@ export type BaseAdapterOptions = {
 };
 
 export type BaseAdapterOptionsWithFile = BaseAdapterOptions & {
-  processor: (...args: any[]) => any;
+  loader: (...args: any[]) => any;
 };
 
 export class BaseAdapter<T extends ResolvedSpecnovaConfig = ResolvedSpecnovaConfig> {
@@ -28,7 +28,7 @@ export class FileAdapter<
   constructor(options?: BaseAdapterOptionsWithFile) {
     super(options);
     if (!options) return;
-    this.loader = options.processor;
+    this.loader = options.loader;
   }
   async transform(externalConfig: T): Promise<T> {
     return externalConfig;
