@@ -1,4 +1,4 @@
-import base from '@specnova/eslint-config/base.js';
+import base from '@internal/specnova-eslint-config/base.js';
 
 /** @type {import('eslint').Linter.Config} */
 export default base;

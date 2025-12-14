@@ -16,7 +16,7 @@ importers:
         specifier: ^2.29.8
         version: 2.29.8(@types/node@20.19.25)
     devDependencies:
-      '@specnova/eslint-config':
+      '@internal/specnova-eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
       eslint:
@@ -152,7 +152,7 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
     devDependencies:
-      '@specnova/eslint-config':
+      '@internal/specnova-eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
       '@types/node':
@@ -170,12 +170,12 @@ importers:
 
   packages/@specnova-adapters:
     devDependencies:
-      '@specnova/core':
-        specifier: workspace:*
-        version: link:../@specnova
-      '@specnova/eslint-config':
+      '@internal/specnova-eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@rabel-lab/specnova':
+        specifier: workspace:*
+        version: link:../@specnova
       '@types/node':
         specifier: ^20.19.25
         version: 20.19.25

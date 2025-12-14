@@ -3,7 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": true,
   "fixed": [],
-  "linked": [],
+  "linked": [["@rabel-lab/specnova", "@rabel-lab/specnova-adapters"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

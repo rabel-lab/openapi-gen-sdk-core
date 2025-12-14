@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "@specnova/core",
+  "name": "@rabel-lab/specnova",
   "version": "1.0.0",
   "description": "Core library for generating TypeScript SDKs from OpenAPI specs, managing patches, versions, and automation scripts.",
   "license": "MIT",
@@ -43,7 +43,7 @@
     "play": "pnpm build && node dist/dev/playground.dev.config.js"
   },
   "devDependencies": {
-    "@specnova/eslint-config": "workspace:*",
+    "@internal/specnova-eslint-config": "workspace:*",
     "@types/node": "^20.19.25",
     "tsup": "^8.5.1",
     "turbo": "^2.6.3",

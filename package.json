@@ -9,7 +9,7 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@specnova/eslint-config": "workspace:*",
+    "@internal/specnova-eslint-config": "workspace:*",
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
@@ -19,6 +19,8 @@
     "prepare": "husky",
     "lint": "turbo run lint",
     "format": "turbo run format",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
     "publish-packages": "turbo run lint build test && changeset version && changeset publish"
   },
   "lint-staged": {

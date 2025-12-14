@@ -1,8 +1,8 @@
 import { HeyApiPlugin, heyApiPluginName } from '@/adapters/@hey-api/type';
 
-import { BaseAdapterOptionsWithFile, FileAdapter } from '@specnova/core/adapters';
-import type { ResolvedSpecnovaConfig, SpecnovaConfig } from '@specnova/core/config';
-import { createLoader, mergeWithDefaults, UserConfig } from '@specnova/core/config';
+import { BaseAdapterOptionsWithFile, FileAdapter } from '@rabel-lab/specnova/adapters';
+import type { ResolvedSpecnovaConfig, SpecnovaConfig } from '@rabel-lab/specnova/config';
+import { createLoader, mergeWithDefaults, UserConfig } from '@rabel-lab/specnova/config';
 function isHeyApiPlugin(plugin: unknown): plugin is HeyApiPlugin['Config'] {
   return typeof plugin === 'object' && plugin !== null && (plugin as any).name === heyApiPluginName;
 }

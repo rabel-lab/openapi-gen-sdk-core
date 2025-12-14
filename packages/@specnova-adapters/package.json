@@ -1,11 +1,14 @@
 {
   "type": "module",
-  "name": "@specnova/adapters",
+  "name": "@rabel-lab/specnova-adapters",
   "version": "0.0.1",
   "description": "OpenAPI SpecNova Adapters",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "format": "prettier --write 'src/**/*.ts'",
+    "lint": "eslint --fix 'src/**/*.ts'"
   },
   "exports": {
     ".": {
@@ -14,8 +17,8 @@
     }
   },
   "devDependencies": {
-    "@specnova/core": "workspace:*",
-    "@specnova/eslint-config": "workspace:*",
+    "@rabel-lab/specnova": "workspace:*",
+    "@internal/specnova-eslint-config": "workspace:*",
     "@types/node": "^20.19.25",
     "tsup": "^8.5.1",
     "turbo": "^2.6.3",

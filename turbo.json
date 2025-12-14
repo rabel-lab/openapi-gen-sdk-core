@@ -7,6 +7,8 @@
     },
     "lint": {},
     "format": {},
-    "test": {}
+    "test": {},
+    "dev": {},
+    "clean": {}
   }
 }
