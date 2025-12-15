@@ -2,7 +2,7 @@
   "type": "module",
   "name": "@rabel-lab/specnova",
   "private": false,
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Core library for generating TypeScript SDKs from OpenAPI specs, managing patches, versions, and automation scripts.",
   "license": "MIT",
   "engines": {
@@ -13,7 +13,7 @@
     "dist/bin"
   ],
   "bin": {
-    "openapi-gen": "dist/cli.js"
+    "specnova": "dist/bin/cli.js"
   },
   "exports": {
     ".": {
