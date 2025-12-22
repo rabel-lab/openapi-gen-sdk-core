@@ -7,6 +7,7 @@ const META_EXT = 'json' satisfies SnapshotFileExtension;
 const META_FILE = `meta.${META_EXT}`;
 
 export function buildMetaPath(config: ResolvedSpecnovaConfig, version: string): string {
+  //!TODO: Ensure semver version is used
   const snapshotConfig = config.snapshot;
   const rootDir =
     typeof snapshotConfig.folder === 'string' ? snapshotConfig.folder : snapshotConfig.folder.root;

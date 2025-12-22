@@ -10,6 +10,7 @@ import { readFileSync } from 'fs';
 import { mkdir, rename, rm, writeFile } from 'fs/promises';
 import { join as pathJoin } from 'path';
 import { isDeepStrictEqual } from 'util';
+import { z } from 'zod/mini';
 
 const TEMP_FOLDER = '.tmp-write';
 
@@ -34,11 +35,19 @@ type SnapshotMetaData = {
   sha256: SnapshotMetaHashes;
 };
 
+export const snapshotMetaDataSchema = z.object({
+  info: z.any(),
+  path: z.string(),
+  config: z.any(),
+  files: z.any(),
+  sha256: z.any(),
+});
+
 type SnapshotMetaDigestors = {
   [key in SnapshotFileSlots]?: string;
 };
 
-type SnapshotMetaDocuments = {
+type SnapshotMetaEditedFiles = {
   [key in SnapshotFileSlots]?: {
     text: string;
   };
@@ -48,7 +57,7 @@ class SnapshotMetaImpl {
   private lock: boolean = false;
   private data: SnapshotMetaData;
   protected editData: SnapshotMetaData;
-  protected documents: SnapshotMetaDocuments = {};
+  protected editFiles: SnapshotMetaEditedFiles = {};
 
   constructor(data: SnapshotMetaData) {
     this.data = data;
@@ -61,7 +70,7 @@ class SnapshotMetaImpl {
 
   private clear() {
     this.editData = this.data;
-    this.documents = {};
+    this.editFiles = {};
     this.lock = false;
   }
 
@@ -98,14 +107,14 @@ class SnapshotMetaImpl {
         case 'source':
         case 'normalized':
           if (!digester[key]) continue;
-          this.documents[key as keyof SnapshotMetaHashes] = {
+          this.editFiles[key as keyof SnapshotMetaHashes] = {
             text: digester[key],
           };
           this.editData.sha256[key] = digestString(digester[key]);
           break;
         case 'meta':
           if (!digester[key]) continue;
-          this.documents.meta = {
+          this.editFiles.meta = {
             text: digester[key],
           };
           break;
@@ -136,7 +145,7 @@ class SnapshotMetaImpl {
   private async endSubmit() {
     //# Prepare data;
     this.ensureLocked();
-    const documentEntries = Object.entries(this.documents);
+    const documentEntries = Object.entries(this.editFiles);
     const tempFolder = pathJoin(this.editData.path, TEMP_FOLDER);
     const destFolder = this.editData.path;
     const files = this.editData.files;
@@ -194,9 +203,15 @@ export class SnapshotMeta extends SnapshotMetaImpl {
       | { specnovaSource: SpecnovaSource; config: ResolvedSpecnovaConfig },
   ) {
     if ('meta' in args) {
+      // Existing meta
       super(args.meta);
+      // Validate files & sha256
+      if (!this.softCompare(this)) {
+        throw new Error('Snapshot: invalid meta');
+      }
       return;
     } else if ('specnovaSource' in args && 'config' in args) {
+      // Fresh meta
       const { specnovaSource, config } = args;
       super({
         info: specnovaSource.info,
@@ -212,6 +227,14 @@ export class SnapshotMeta extends SnapshotMetaImpl {
       throw new Error('Snapshot: invalid meta constructor');
     }
   }
+
+  static fromFile(path: string) {
+    //!TODO: validate file via zod
+    const text = readFileSync(path, 'utf8');
+    const parsedMeta = snapshotMetaDataSchema.parse(JSON.parse(text));
+    return new this({ meta: parsedMeta });
+  }
+
   static pull(version: string, config: ResolvedSpecnovaConfig): SnapshotMeta {
     const path = buildMetaPath(config, version);
     const metaFile = buildMetaFile();

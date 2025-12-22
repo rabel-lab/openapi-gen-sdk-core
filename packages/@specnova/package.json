@@ -31,7 +31,9 @@
   },
   "specnova": {
     "source": "https://raw.githubusercontent.com/swagger-api/swagger-petstore/master/src/main/resources/openapi.yaml",
-    "version": "1.0.0"
+    "branch": {
+      "target": ".snapshots/1.0.27/meta.json"
+    }
   },
   "scripts": {
     "build": "tsup",
@@ -47,6 +49,7 @@
   "devDependencies": {
     "@internal/specnova-eslint-config": "workspace:*",
     "@types/node": "^20.19.25",
+    "@types/semver": "^7.7.1",
     "tsup": "^8.5.1",
     "turbo": "^2.6.3",
     "typescript": "^5.9.3"
@@ -74,6 +77,7 @@
     "@swagger-api/apidom-reference": "1.0.0-rc.4",
     "c12": "^3.3.2",
     "commander": "^11.1.0",
+    "semver": "^7.7.3",
     "typesafe-i18n": "^5.26.2",
     "zod": "^4.2.1"
   },

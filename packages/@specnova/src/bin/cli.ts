@@ -2,8 +2,10 @@
 
 import installFetch from '@/bin/installers/fetch';
 import installGenerate from '@/bin/installers/generate';
+import installInit from '@/bin/installers/init';
 import installLookup from '@/bin/installers/lookup';
 import installPull from '@/bin/installers/pull';
+import installSet from '@/bin/installers/set';
 import { NpmPackage } from '@/npm';
 
 import { Command } from 'commander';
@@ -12,9 +14,11 @@ const program = new Command();
 program.name('specnova').description('SpecNova CLI').version(NpmPackage.getPackage().version);
 
 // Installers
+installInit(program);
 installFetch(program);
 installPull(program);
 installLookup(program);
 installGenerate(program);
+installSet(program);
 
 program.parse(process.argv);

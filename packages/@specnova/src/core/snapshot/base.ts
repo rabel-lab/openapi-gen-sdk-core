@@ -21,6 +21,13 @@ export class Snapshot {
   //= Meta
   private meta: SnapshotMeta | null = null;
 
+  //# clear cache
+  private clearCache() {
+    this.specnovaSource = null;
+    this.meta = null;
+    this.sourceUrl = '';
+  }
+
   //# Getters
   //-> Config
   private async getFullConfig(): Promise<ResolvedSpecnovaConfig> {
@@ -55,39 +62,63 @@ export class Snapshot {
     return this.meta;
   }
   /**
-   * Load the OpenAPI source;
+   * Load from a source url.
    * @param source - The OpenAPI source.
    * @returns  - this
    */
-  async load(source: string): Promise<this> {
+  private async doLoad(source: string): Promise<this> {
+    this.clearCache();
     const config = await this.getFullConfig();
     this.sourceUrl = source;
     const specnovaSource = await this.ensureSpecnovaSource();
-    const hasMeta = !!this.meta;
     // Ccompute the snapshot path and create a new meta.
     let newMeta: SnapshotMeta;
     if (specnovaSource.isExternal) {
+      // Create a fresh meta
       newMeta = new SnapshotMeta({ specnovaSource, config });
     } else {
-      newMeta = SnapshotMeta.pull(specnovaSource.info.version, config);
+      // Must be loaded using meta file
+      throw new Error('Snapshot: specnova source must be loaded from a meta file');
     }
-    // If already hase a meta
-    if (!hasMeta) {
-      // Compare validity to the new meta
-      const isValid = hasMeta ? await this.meta?.softCompare(newMeta) : true;
-      // Set the new meta
-      this.meta = isValid ? newMeta : this.meta;
-    }
+    // set the new meta
+    this.meta = newMeta;
     return this;
+  }
+  /**
+   * Load from a meta file
+   * @param filePath - The meta path.
+   * @returns - this
+   */
+  private async doLoadFromMeta(filePath: string) {
+    this.clearCache();
+    // -> load meta
+    const newMeta = SnapshotMeta.fromFile(filePath);
+    // -> load source
+    const { path, files } = newMeta.get();
+    //!TODO: Ensure path is relative and unescaped
+    const fullSourcePath = pathJoin(process.cwd(), path, files.names.source);
+    this.sourceUrl = fullSourcePath;
+    await this.ensureSpecnovaSource();
+    this.meta = newMeta;
+    return this;
+  }
+  /**
+   * Load the spec branch from package.json
+   *  Then, load the spec version.
+   * @returns - this
+   */
+  async loadBranch(): Promise<this> {
+    const specnovaPkg = await this.packageHandler.getPackageSpecnova();
+    return await this.doLoadFromMeta(specnovaPkg.branch.target);
   }
   /**
    * Get the main spec version from package.json
    *  Then, load the spec version.
    * @returns - this
    */
-  async loadMain(): Promise<this> {
+  async loadSource(): Promise<this> {
     const { source } = await this.packageHandler.getPackageSpecnova();
-    return this.load(source);
+    return await this.doLoad(source);
   }
   /**
    * Get a specific spec version snapshot folder.
@@ -101,7 +132,7 @@ export class Snapshot {
     const { path, files } = newMeta.get();
     const source = pathJoin(path, files.names.source);
     this.meta = newMeta;
-    return this.load(source);
+    return this.doLoad(source);
   }
   /**
    * Prepare the source to be saved.
@@ -187,11 +218,12 @@ export class Snapshot {
    * @returns - true if saved, false if failed
    */
   async setMain() {
-    const { info, path, files } = this.ensureMeta().get();
-    const fullNormalizedPath = pathJoin(path, files.names.normalized);
+    const { path, files } = this.ensureMeta().get();
+    const metaPath = pathJoin(path, files.names.meta);
     this.packageHandler.editPackage({
-      source: fullNormalizedPath,
-      version: info.version,
+      branch: {
+        target: metaPath,
+      },
     });
     return true;
   }
