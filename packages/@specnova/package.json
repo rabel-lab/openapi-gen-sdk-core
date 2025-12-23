@@ -30,9 +30,9 @@
     }
   },
   "specnova": {
-    "source": "https://raw.githubusercontent.com/swagger-api/swagger-petstore/master/src/main/resources/openapi.yaml",
+    "source": "https://gist.githubusercontent.com/Montreal-Dev/233d4ecca97559d2372bd3e8b9c30fda/raw/2e053b8ed0ee78ee6667a2e2108f84de414a72d8/openapi.json",
     "branch": {
-      "target": ".snapshots/1.0.27/meta.json"
+      "target": ".snapshots/1.0.0/meta.json"
     }
   },
   "scripts": {
