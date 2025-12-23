@@ -1,5 +1,6 @@
 import InfoExtracter from '@/core/extracter/info/extracter';
 import { isOpenApi2, isOpenApi3x } from '@/core/predicate';
+import { semver } from '@/types/semver';
 
 import { toValue } from '@swagger-api/apidom-core';
 
@@ -12,7 +13,7 @@ const openapiInfoHandlers = [
     return {
       openapi: openapiValue,
       title: infoValue.title,
-      version: infoValue.version,
+      version: semver.parse(infoValue.version),
       license: infoValue.license,
     };
   }),
@@ -24,7 +25,7 @@ const openapiInfoHandlers = [
     return {
       openapi: openapiValue,
       title: infoValue.title,
-      version: infoValue.version,
+      version: semver.parse(infoValue.version),
       license: infoValue.license,
     };
   }),

@@ -8,6 +8,7 @@ import { SnapshotMeta } from '@/core/snapshot/meta/base';
 import { NpmPackage } from '@/npm/base';
 import { SpecnovaSource } from '@/types';
 import { relativePathSchema } from '@/types/files';
+import { Semver, semver } from '@/types/semver';
 
 import { join as pathJoin } from 'path';
 
@@ -59,7 +60,6 @@ export class Snapshot {
   }
   private ensureMeta(): SnapshotMeta {
     if (!this.meta) throw new Error('Snapshot: no meta found');
-    //!TODO: Validate meta
     return this.meta;
   }
   /**
@@ -123,12 +123,13 @@ export class Snapshot {
   /**
    * Get a specific spec version snapshot folder.
    *  Then, load the spec version.
-   * @param version - The spec version.
+   * @param rawVersion - The spec version.
    * @returns - this
    */
-  async loadVersion(version: string): Promise<this> {
+  async loadVersion(rawVersion: Semver): Promise<this> {
+    const parsedVersion = semver.parse(rawVersion);
     const config = await this.getFullConfig();
-    const newMeta = SnapshotMeta.pull(version, config);
+    const newMeta = SnapshotMeta.pull(parsedVersion, config);
     const { path, files } = newMeta.get();
     const source = pathJoin(path, files.names.source);
     this.meta = newMeta;

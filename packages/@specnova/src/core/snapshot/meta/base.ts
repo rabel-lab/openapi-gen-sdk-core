@@ -5,6 +5,7 @@ import { buildMetaFile, buildMetaPath, buildMetaSourceFiles } from '@/core/snaps
 import { compareSha256, digestString, sha256String } from '@/core/snapshot/meta/lib/compare';
 import { SpecnovaSource } from '@/types';
 import { relativePathSchema } from '@/types/files';
+import { Semver, semver } from '@/types/semver';
 
 import { readFileSync } from 'fs';
 import { mkdir, rename, rm, writeFile } from 'fs/promises';
@@ -221,7 +222,8 @@ export class SnapshotMeta extends SnapshotMetaImpl {
     return new this({ meta: parsedMeta });
   }
 
-  static pull(version: string, config: ResolvedSpecnovaConfig): SnapshotMeta {
+  static pull(rawVersion: Semver, config: ResolvedSpecnovaConfig): SnapshotMeta {
+    const version = semver.parse(rawVersion);
     const path = buildMetaPath(config, version);
     const metaFile = buildMetaFile();
     const pathTo = pathJoin(path, metaFile.file);

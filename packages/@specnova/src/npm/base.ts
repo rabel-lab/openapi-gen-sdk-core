@@ -1,4 +1,5 @@
 import converter from '@/core/converter';
+import { Semver } from '@/types/semver';
 
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve as path } from 'path';
@@ -14,7 +15,7 @@ const specNovaPackageSchema = z.object({
 export type SpecNovaInfo = z.infer<typeof specNovaPackageSchema>;
 
 type PackageJson = {
-  version: string;
+  version: Semver;
   specnova: SpecNovaInfo;
 };
 

@@ -2,13 +2,15 @@ import { ResolvedSpecnovaConfig } from '@/config/type';
 import { snapshotMetaDataSchema } from '@/core/snapshot/meta/base';
 import { SpecnovaSource } from '@/types';
 import { SnapshotFileExtension } from '@/types/files';
+import { Semver, semver } from '@/types/semver';
 
 import z from 'zod';
 
 const META_EXT = 'json' satisfies SnapshotFileExtension;
 const META_FILE = `meta.${META_EXT}`;
 
-export function buildMetaPath(config: ResolvedSpecnovaConfig, version: string): string {
+export function buildMetaPath(config: ResolvedSpecnovaConfig, rawVersion: Semver): string {
+  const version = semver.parse(rawVersion);
   //!TODO: Ensure semver version is used
   const snapshotConfig = config.snapshot;
   const rootDir =
