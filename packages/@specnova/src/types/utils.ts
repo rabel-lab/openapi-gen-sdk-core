@@ -8,7 +8,7 @@ type TransformPass<T extends ZodType> = {
   result: z.output<T>;
 };
 
-type TransformFail<T extends ZodType> = {
+type TransformFail = {
   success: false;
   error: {
     message: string;
@@ -18,7 +18,7 @@ type TransformFail<T extends ZodType> = {
 type TransformCheckFunc<T extends ZodType> = (
   value: TransformFuncArgs<T>[0],
   ctx?: TransformFuncArgs<T>[1],
-) => TransformPass<T> | TransformFail<T>;
+) => TransformPass<T> | TransformFail;
 
 type TransformValidatorFunc<T extends ZodType> = (value: TransformFuncArgs<T>[0]) => boolean;
 
